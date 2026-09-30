@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Creating great products with Accenture Song's frameworks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F6FB; --surface:#FFFFFF; --ink:#171A33; --ink-soft:#575B7A; --rule:#DCDFEE; --wash:#ECEEF8;
+  --see:#0B7F76; --see-soft:#DDF2EF;
+  --solve:#A86400; --solve-soft:#FBEED0;
+  --simplify:#4A39C9; --simplify-soft:#E7E4FA;
+  --scale:#B01F58; --scale-soft:#F8E0E9;
+  --good:#1D7448; --good-soft:#E3F3EA; --bad:#B0342A; --bad-soft:#FAE6E3;
+  --font-ui:'Bricolage Grotesque','Segoe UI',system-ui,-apple-system,sans-serif;
+  --font-body:'Source Serif 4',Georgia,'Times New Roman',serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#10122A; --surface:#191C3A; --ink:#ECEEFA; --ink-soft:#A9ADCB; --rule:#2C3060; --wash:#1F2246;
+    --see:#3CC5B8; --see-soft:#123A3D;
+    --solve:#F0B145; --solve-soft:#3A2E12;
+    --simplify:#A398FF; --simplify-soft:#26235A;
+    --scale:#FF80AA; --scale-soft:#48192F;
+    --good:#58D08E; --good-soft:#143526; --bad:#FF8A7E; --bad-soft:#421C19;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.7}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--simplify);outline-offset:2px}
+.ph-ink{--ph:var(--ink);--ph-soft:var(--wash)}
+.ph-see{--ph:var(--see);--ph-soft:var(--see-soft)}
+.ph-solve{--ph:var(--solve);--ph-soft:var(--solve-soft)}
+.ph-simplify{--ph:var(--simplify);--ph-soft:var(--simplify-soft)}
+.ph-scale{--ph:var(--scale);--ph-soft:var(--scale-soft)}
+
+/* layout */
+.app{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--rule);padding:28px 16px 32px}
+.brand{font-family:var(--font-ui);font-weight:800;font-size:1.2rem;line-height:1.15;letter-spacing:-.01em;margin:0 6px 6px}
+.brand-sub{font-family:var(--font-ui);font-size:.82rem;color:var(--ink-soft);margin:0 6px 16px;line-height:1.4}
+.overall{font-family:var(--font-ui);font-size:.8rem;margin:0 6px 8px;color:var(--ink-soft)}
+.overall .bar{height:5px;background:var(--rule);border-radius:3px;margin-top:6px;overflow:hidden}
+.overall .bar i{display:block;height:100%;width:0;background:var(--ink);transition:width .3s}
+.nav-group{font-family:var(--font-ui);font-size:.8rem;font-weight:600;color:var(--ink-soft);margin:20px 6px 6px}
+.nav-item{display:block;width:100%;text-align:left;background:none;border:0;border-left:4px solid var(--ph);padding:8px 10px 8px 12px;margin:2px 0;cursor:pointer;font-family:var(--font-ui);border-radius:0 6px 6px 0}
+.nav-item:hover{background:var(--ph-soft)}
+.nav-item[aria-current="true"]{background:var(--ph-soft);font-weight:700}
+.nav-item .nt{display:block;font-size:.95rem;line-height:1.3}
+.nav-item .nm{display:block;font-size:.74rem;color:var(--ink-soft);margin-top:2px;font-weight:400;line-height:1.35}
+.main{padding:44px clamp(20px,5vw,72px) 96px;max-width:980px}
+.panel{display:none}
+.panel.active{display:block}
+
+/* headings and prose */
+.panel h1{font-family:var(--font-ui);font-weight:800;font-size:clamp(2.1rem,4.4vw,3.2rem);line-height:1.04;letter-spacing:-.02em;margin:0 0 14px;max-width:19ch}
+.panel h2{font-family:var(--font-ui);font-weight:800;font-size:clamp(1.8rem,3.2vw,2.3rem);line-height:1.1;letter-spacing:-.015em;margin:0 0 6px}
+.panel h3{font-family:var(--font-ui);font-weight:700;font-size:1.25rem;line-height:1.25;margin:2.2rem 0 .5rem}
+.panel h4{font-family:var(--font-ui);font-weight:700;font-size:1.02rem;margin:1.4rem 0 .3rem}
+.dek{font-size:1.2rem;line-height:1.55;color:var(--ink-soft);max-width:58ch;margin:0 0 22px}
+.meta{font-family:var(--font-ui);font-size:.85rem;color:var(--ink-soft);margin:0 0 22px}
+.prose>p,.prose>ul,.prose>ol,.prose>.callout,.prose>h3,.prose>h4,.prose>.tablewrap{max-width:66ch}
+.prose p{margin:.75rem 0}
+.prose ul,.prose ol{padding-left:1.3rem;margin:.75rem 0}
+.prose li{margin:.35rem 0}
+.lede{font-size:1.18rem;line-height:1.6}
+.prose a{color:var(--simplify);text-underline-offset:2px}
+.prose strong{font-weight:600}
+
+/* callouts */
+.objectives,.callout{border-left:4px solid var(--ph,var(--ink));background:var(--ph-soft,var(--wash));padding:14px 18px;margin:1.3rem 0;border-radius:0 8px 8px 0;font-size:.98rem;line-height:1.6}
+.objectives{font-family:var(--font-ui)}
+.objectives strong,.callout .ct{font-family:var(--font-ui);font-weight:700;display:block;margin-bottom:4px}
+.objectives ul{margin:.3rem 0 0;padding-left:1.15rem}
+.callout p{margin:.4rem 0}
+.callout.warn{--ph:var(--solve);--ph-soft:var(--solve-soft)}
+
+/* tables */
+.tablewrap{overflow-x:auto;margin:1.2rem 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem;line-height:1.5;font-family:var(--font-ui)}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:700;background:var(--wash)}
+td.k{font-weight:600;white-space:nowrap}
+
+/* figures */
+.fig{margin:1.8rem 0;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:14px 10px 10px;overflow-x:auto}
+.fig svg{display:block;width:100%;min-width:540px;height:auto;margin:0 auto}
+.fig figcaption{font-family:var(--font-ui);font-size:.85rem;color:var(--ink-soft);padding:8px 8px 2px;max-width:70ch}
+svg text{font-family:var(--font-ui);fill:var(--ink)}
+svg .m{fill:var(--ink-soft)}
+svg .b{font-weight:700}
+svg .w{fill:#fff}
+svg .bx{fill:var(--surface);stroke:var(--rule);stroke-width:1.6}
+svg .bx-ink{fill:var(--wash);stroke:var(--ink-soft);stroke-width:1.4}
+svg .bx-see{fill:var(--see-soft);stroke:var(--see);stroke-width:1.6}
+svg .bx-solve{fill:var(--solve-soft);stroke:var(--solve);stroke-width:1.6}
+svg .bx-simplify{fill:var(--simplify-soft);stroke:var(--simplify);stroke-width:1.6}
+svg .bx-scale{fill:var(--scale-soft);stroke:var(--scale);stroke-width:1.6}
+svg .f-ink{fill:var(--ink)} svg .f-see{fill:var(--see)} svg .f-solve{fill:var(--solve)} svg .f-simplify{fill:var(--simplify)} svg .f-scale{fill:var(--scale)}
+svg .f-wash{fill:var(--wash)} svg .f-rule{fill:var(--rule)}
+svg .ln{stroke:var(--ink-soft);stroke-width:1.6;fill:none}
+svg .ln-d{stroke:var(--ink-soft);stroke-width:1.5;fill:none;stroke-dasharray:5 4}
+svg .ln-see{stroke:var(--see);stroke-width:2;fill:none}
+svg .ln-bad{stroke:var(--bad);stroke-width:1.8;fill:none;stroke-dasharray:4 3}
+svg .ln-good{stroke:var(--good);stroke-width:2.4;fill:none}
+svg .ring{fill:none;stroke:var(--ink-soft);stroke-width:1.4;stroke-dasharray:6 5}
+svg .ring-s{fill:var(--surface);stroke:var(--ink);stroke-width:2}
+
+/* key terms */
+.terms{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:8px 18px;font-family:var(--font-ui);font-size:.93rem;margin:.8rem 0;max-width:76ch;line-height:1.5}
+.terms dt{font-weight:700}
+.terms dd{margin:0;color:var(--ink-soft)}
+
+/* quiz */
+.quiz,.deck,.assess{margin-top:3rem;padding-top:1.4rem;border-top:2px solid var(--ph,var(--ink));font-family:var(--font-ui)}
+.quiz h3,.deck h3,.assess h3{margin-top:0}
+.q{padding:1.1rem 0;border-bottom:1px solid var(--rule);max-width:70ch}
+.q-prompt{font-weight:600;margin:0 0 .7rem;line-height:1.45;font-size:1rem}
+.opts{display:grid;gap:7px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:10px 12px;background:var(--surface);border:1.5px solid var(--rule);border-radius:8px;cursor:pointer;line-height:1.45;font-size:.95rem}
+.opt:hover{border-color:var(--ink-soft)}
+.opt-l{flex:0 0 auto;font-weight:700;width:1.5em;height:1.5em;border-radius:50%;background:var(--wash);display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;margin-top:1px}
+.q[data-done] .opt{cursor:default}
+.q[data-done] .opt:hover{border-color:var(--rule)}
+.opt.correct{border-color:var(--good);background:var(--good-soft)}
+.opt.correct .opt-l{background:var(--good);color:#fff}
+.opt.incorrect{border-color:var(--bad);background:var(--bad-soft)}
+.opt.incorrect .opt-l{background:var(--bad);color:#fff}
+.q-fb{font-size:.92rem;line-height:1.55;margin-top:.7rem;display:none;color:var(--ink)}
+.q[data-done] .q-fb{display:block}
+.q-fb b.ok{color:var(--good)} .q-fb b.no{color:var(--bad)}
+.quiz-sum{font-weight:600;margin:1rem 0 .5rem}
+.btn{display:inline-block;font-family:var(--font-ui);font-weight:600;font-size:.92rem;padding:9px 16px;border-radius:8px;border:1.5px solid var(--ink);background:var(--surface);cursor:pointer;margin:4px 8px 4px 0}
+.btn:hover{background:var(--ink);color:var(--surface)}
+.btn.primary{background:var(--ink);color:var(--surface)}
+.btn.primary:hover{opacity:.88}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn[disabled]:hover{background:var(--surface);color:var(--ink)}
+
+/* flashcards */
+.deck-stage{max-width:560px}
+.deck-count{font-size:.85rem;color:var(--ink-soft);margin:0 0 8px}
+.card{perspective:1200px;height:220px;cursor:pointer;outline-offset:4px}
+.card-in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.card.flipped .card-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;border:1.5px solid var(--ph,var(--ink));display:flex;align-items:center;justify-content:center;text-align:center;padding:22px 26px;overflow:auto;line-height:1.5}
+.face.front{background:var(--ph-soft,var(--wash));font-weight:700;font-size:1.15rem}
+.face.back{background:var(--surface);transform:rotateY(180deg);font-size:.98rem}
+@media (prefers-reduced-motion:reduce){
+  .card-in{transform:none!important}
+  .face.back{transform:none;display:none}
+  .card.flipped .face.front{display:none}
+  .card.flipped .face.back{display:flex}
+}
+.deck-hint{font-size:.85rem;color:var(--ink-soft);margin:8px 0 6px}
+.deck-done{padding:18px;border:1.5px solid var(--rule);border-radius:10px;background:var(--surface)}
+
+/* assessment */
+.arow{padding:12px 0;border-bottom:1px solid var(--rule);max-width:72ch}
+.arow p{margin:0 0 8px;font-size:.98rem;line-height:1.45}
+.arow .tag{font-weight:700;margin-right:6px}
+.seg{display:inline-flex;border:1.5px solid var(--rule);border-radius:8px;overflow:hidden}
+.seg button{background:var(--surface);border:0;padding:7px 14px;cursor:pointer;font-size:.88rem;border-right:1px solid var(--rule)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface);font-weight:600}
+.result{margin-top:22px;max-width:640px}
+.rbar{display:grid;grid-template-columns:150px 1fr 44px;gap:10px;align-items:center;margin:8px 0;font-size:.9rem}
+.rbar .track{height:14px;background:var(--wash);border-radius:7px;overflow:hidden}
+.rbar .track i{display:block;height:100%;width:0;background:var(--ph);transition:width .35s}
+
+/* pager */
+.pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--rule)}
+
+@media (max-width:900px){
+  .app{display:block}
+  .side{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--rule);padding:16px 14px 10px}
+  .brand-sub,.nav-group,.nm{display:none}
+  .nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}
+  .nav-item{width:auto;white-space:nowrap;flex:0 0 auto;border-left:0;border-bottom:4px solid var(--ph);border-radius:6px 6px 0 0;padding:6px 10px}
+  .main{padding:26px 18px 72px}
+  .terms{grid-template-columns:1fr}
+  .rbar{grid-template-columns:110px 1fr 40px}
+  .card{height:250px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6A6E8E"/>
+    </marker>
+  </defs>
+</svg>
+
+<div class="app">
+  <aside class="side" aria-label="Course navigation">
+    <p class="brand">Great products, Accenture Song style</p>
+    <p class="brand-sub">An independent study guide with quizzes and flashcards</p>
+    <div class="overall" id="overall"></div>
+    <nav class="nav" id="nav"></nav>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+
+<script>
+const MODULES = [];
+const FINAL_QUIZ = [];
+const ASSESS = [];
+const SOURCES = [];
+MODULES.push({
+  id:'m1', title:'Start here', group:'Foundations', phase:'ink', hero:true,
+  dek:'A study guide to the frameworks and principles behind Accenture Song\u2019s product and innovation work: life centricity, the Growth OS, experience design at scale, and the AI-era research. Independent and unofficial; it is not an Accenture publication.',
+  objectives:[
+    'Place Accenture Song inside Accenture and name where its product methods come from.',
+    'Name the published frameworks and explain how they fit together.',
+    'Separate what Song has documented from what this course synthesizes, and read its statistics critically.'
+  ],
+  content:`
+<p class="lede">Accenture Song is the part of Accenture that designs and builds products, marketing, commerce and service experiences for large organizations. Its product thinking has no single name or handbook. It is a stack of ideas that arrived through different acquisitions and research programs. This course lines them up so you can use them together.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 330" role="img" aria-label="Framework map: life centricity on top, four verbs See Solve Simplify Scale, the engines under each verb, and generative AI running through all four.">
+  <rect x="10" y="10" width="580" height="54" rx="8" class="f-ink"/>
+  <text x="300" y="33" text-anchor="middle" class="w b" font-size="16">Point of view: life centricity</text>
+  <text x="300" y="52" text-anchor="middle" class="w" font-size="12.5">Stay relevant to people whose lives, and the forces on them, keep changing</text>
+
+  <rect x="10" y="82" width="130" height="70" rx="8" class="bx-see"/>
+  <text x="75" y="106" text-anchor="middle" class="b" font-size="16">See</text>
+  <text x="75" y="126" text-anchor="middle" class="m" font-size="11.5">People and the forces</text>
+  <text x="75" y="141" text-anchor="middle" class="m" font-size="11.5">acting on them</text>
+
+  <rect x="160" y="82" width="130" height="70" rx="8" class="bx-solve"/>
+  <text x="225" y="106" text-anchor="middle" class="b" font-size="16">Solve</text>
+  <text x="225" y="126" text-anchor="middle" class="m" font-size="11.5">Needs, right to win,</text>
+  <text x="225" y="141" text-anchor="middle" class="m" font-size="11.5">new value</text>
+
+  <rect x="310" y="82" width="130" height="70" rx="8" class="bx-simplify"/>
+  <text x="375" y="106" text-anchor="middle" class="b" font-size="16">Simplify</text>
+  <text x="375" y="126" text-anchor="middle" class="m" font-size="11.5">Connected experience</text>
+  <text x="375" y="141" text-anchor="middle" class="m" font-size="11.5">and fluid teams</text>
+
+  <rect x="460" y="82" width="130" height="70" rx="8" class="bx-scale"/>
+  <text x="525" y="106" text-anchor="middle" class="b" font-size="16">Scale</text>
+  <text x="525" y="126" text-anchor="middle" class="m" font-size="11.5">Velocity, portfolio,</text>
+  <text x="525" y="141" text-anchor="middle" class="m" font-size="11.5">creative leadership</text>
+
+  <path d="M141,117 L158,117" class="ln" marker-end="url(#arw)"/>
+  <path d="M291,117 L308,117" class="ln" marker-end="url(#arw)"/>
+  <path d="M441,117 L458,117" class="ln" marker-end="url(#arw)"/>
+
+  <path d="M75,153 L75,176 M225,153 L225,176 M375,153 L375,176 M525,153 L525,176" class="ln"/>
+
+  <rect x="10" y="176" width="130" height="92" rx="8" class="bx"/>
+  <text x="20" y="198" class="b" font-size="12.5">Life Trends</text>
+  <text x="20" y="218" class="m" font-size="11.5">Dynamic research</text>
+  <text x="20" y="236" class="m" font-size="11.5">Revalidation</text>
+  <text x="20" y="254" class="m" font-size="11.5">Do versus say</text>
+
+  <rect x="160" y="176" width="130" height="92" rx="8" class="bx"/>
+  <text x="170" y="198" class="b" font-size="12.5">Growth OS</text>
+  <text x="170" y="218" class="m" font-size="11.5">Innovation stages</text>
+  <text x="170" y="236" class="m" font-size="11.5">MVPs and pilots</text>
+  <text x="170" y="254" class="m" font-size="11.5">Portfolio of bets</text>
+
+  <rect x="310" y="176" width="130" height="92" rx="8" class="bx"/>
+  <text x="320" y="198" class="b" font-size="12.5">Craft, delivery</text>
+  <text x="320" y="218" class="m" font-size="11.5">Continuum design</text>
+  <text x="320" y="236" class="m" font-size="11.5">Digital factory</text>
+  <text x="320" y="254" class="m" font-size="11.5">Design systems</text>
+
+  <rect x="460" y="176" width="130" height="92" rx="8" class="bx"/>
+  <text x="470" y="198" class="b" font-size="12.5">Operating model</text>
+  <text x="470" y="218" class="m" font-size="11.5">Portfolio review</text>
+  <text x="470" y="236" class="m" font-size="11.5">Growth engines</text>
+  <text x="470" y="254" class="m" font-size="11.5">Applied creativity</text>
+
+  <rect x="10" y="284" width="580" height="38" rx="8" class="ln-d"/>
+  <text x="300" y="307" text-anchor="middle" font-size="12.5">Running through all four: generative AI as an accelerator, and AI agents as a new audience</text>
+</svg>
+<figcaption>The course map. The top band is the point of view, the four verbs are the method, and the boxes underneath are the tools Song has published or inherited. Each later module covers one column.</figcaption>
+</figure>
+
+<h3>Where the ideas come from</h3>
+<p>Song was announced in April 2022 as the new name for Accenture Interactive. Its product heritage is layered. Fjord, a service design studio founded in 2001, joined in 2013. MATTER added physical product design in 2017. Bionic, acquired in 2021, brought a venture-style method for building new businesses inside large companies, called the Growth OS. Work & Co, a digital product studio, completed its move to Song in January 2024. In December 2025 Accenture invested in WEVO, an AI research platform, to fold simulated customer testing into Song\u2019s GrowthOS.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 250" role="img" aria-label="Timeline from 2013 to 2025 showing Fjord, MATTER, Bionic, the Song announcement, Work and Co, and WEVO.">
+  <line x1="30" y1="135" x2="575" y2="135" class="ln"/>
+  <g class="f-ink">
+    <circle cx="40" cy="135" r="7"/><circle cx="200" cy="135" r="7"/><circle cx="380" cy="135" r="7"/>
+    <circle cx="412" cy="135" r="7"/><circle cx="482" cy="135" r="7"/><circle cx="556" cy="135" r="7"/>
+  </g>
+  <path d="M40,128 L40,104 M380,128 L380,104 M482,128 L482,104" class="ln"/>
+  <path d="M200,142 L200,166 M412,142 L412,166 M556,142 L556,166" class="ln"/>
+
+  <text x="30" y="58" class="b" font-size="14">2013</text>
+  <text x="30" y="77" font-size="12.5">Fjord</text>
+  <text x="30" y="94" class="m" font-size="12">Service design</text>
+
+  <text x="380" y="58" text-anchor="middle" class="b" font-size="14">June 2021</text>
+  <text x="380" y="77" text-anchor="middle" font-size="12.5">Bionic</text>
+  <text x="380" y="94" text-anchor="middle" class="m" font-size="12">Growth OS method</text>
+
+  <text x="462" y="58" class="b" font-size="14">Jan 2024</text>
+  <text x="462" y="77" font-size="12.5">Work &amp; Co</text>
+  <text x="462" y="94" class="m" font-size="12">Digital product studio</text>
+
+  <text x="200" y="186" text-anchor="middle" class="b" font-size="14">2017</text>
+  <text x="200" y="205" text-anchor="middle" font-size="12.5">MATTER</text>
+  <text x="200" y="222" text-anchor="middle" class="m" font-size="12">Physical product design</text>
+
+  <text x="430" y="186" text-anchor="end" class="b" font-size="14">April 2022</text>
+  <text x="430" y="205" text-anchor="end" font-size="12.5">Song announced</text>
+  <text x="430" y="222" text-anchor="end" class="m" font-size="12">Was Accenture Interactive</text>
+
+  <text x="592" y="186" text-anchor="end" class="b" font-size="14">Dec 2025</text>
+  <text x="592" y="205" text-anchor="end" font-size="12.5">WEVO investment</text>
+  <text x="592" y="222" text-anchor="end" class="m" font-size="12">AI research in GrowthOS</text>
+</svg>
+<figcaption>Each milestone added a capability the product method now leans on: service design, physical products, venture-style innovation, digital product craft, and AI-simulated research. Spacing is roughly proportional to time.</figcaption>
+</figure>
+
+<h3>What the practice says it does</h3>
+<p>Song\u2019s Design &amp; Digital Products practice describes its work in seven parts:</p>
+<ul>
+  <li>Using research to understand behavior, aspirations and desires.</li>
+  <li>Designing experiences around emerging trends.</li>
+  <li>Defining the value and strategy of new products and services.</li>
+  <li>Expressing the brand through visual design.</li>
+  <li>Prototyping, validating, testing, refining and launching new concepts.</li>
+  <li>Building immersive products with spatial computing and gaming technology.</li>
+  <li>Scaling design and digital ecosystems across every touchpoint.</li>
+</ul>
+<p>Read that list top to bottom and you can see a pipeline: understand, define, design, prove, scale. That is the flow the four verbs formalize.</p>
+
+<h3>The four verbs</h3>
+<p>Song\u2019s strategy work reduces to four verbs: <strong>see</strong> customers as people, <strong>solve</strong> for relevance, <strong>simplify</strong> for ease of experience, and <strong>scale</strong> for growth. The 2022 life centricity playbook used the first three. The 2023 growth and product innovation report added scale as the fourth. Product teams meet them in that order, but the loop repeats: what you learn at scale feeds the next round of seeing.</p>
+
+<div class="callout warn"><span class="ct">How much to trust the numbers</span>
+<p>Most statistics in this course come from Accenture\u2019s own research: executive surveys (1,700 leaders in 2022, 970 in 2023), predictive models built on those surveys, and consumer surveys. They reveal patterns and correlations. They do not prove that a practice causes growth. The client stories are chosen by the firm, and Song sells services that fit these frameworks. Treat everything here as a well-argued hypothesis to test against your own evidence. The last module gives you a way to do that.</p></div>
+`,
+  keyTerms:[
+    {term:'Life centricity', def:'Song\u2019s core idea: build for people whose lives and needs keep changing, not for a fixed customer profile.'},
+    {term:'See, Solve, Simplify, Scale', def:'The four verbs that organize Song\u2019s growth and product method.'},
+    {term:'Growth & Product Innovation', def:'The Song practice that helps clients design, launch and scale new products, services and businesses.'},
+    {term:'Growth OS', def:'A repeatable, venture-style system for building new businesses inside established firms; inherited from Bionic.'},
+    {term:'Life Trends', def:'Song\u2019s annual report on shifts in human behavior and attitudes.'}
+  ],
+  quiz:[
+    {q:'What was Accenture Song called before its 2022 announcement?', options:['Fjord','Accenture Interactive','Bionic Studios','Accenture Digital Products'], correct:1, explain:'Song was announced in April 2022 as the new name for Accenture Interactive. Fjord and Bionic are separate firms that were acquired along the way.'},
+    {q:'Which acquisition brought the venture-style Growth OS method into Song\u2019s lineage?', options:['Work & Co','MATTER','Bionic','WEVO'], correct:2, explain:'Accenture acquired Bionic in 2021. Its Growth OS applies entrepreneurship and venture capital methods inside large companies. Work & Co added digital product craft, MATTER added physical product design, and WEVO added AI-simulated research.'},
+    {q:'Which statement best describes the evidence behind Song\u2019s frameworks?', options:['Independent randomized trials prove that following them causes growth.','Much of it is Accenture\u2019s own survey research and modeling, showing correlations that should be tested locally.','It comes entirely from academic peer review.','It is anecdotal and contains no quantitative research.'], correct:1, explain:'Song\u2019s reports use executive and consumer surveys plus predictive models. That is useful evidence of patterns, but it is not proof of cause, and the firm has a commercial interest in the frameworks.'},
+    {q:'How does this course treat \u201CSong\u2019s product method\u201D?', options:['As one canonical handbook, summarized chapter by chapter.','As a set of published frameworks and inherited methods, lined up and clearly marked where the course adds its own synthesis.','As a proprietary secret that can only be guessed at.','As identical to standard design thinking with a new name.'], correct:1, explain:'No single document is titled the Song product method. The ideas are spread across playbooks, reports, case studies and acquired practices.'}
+  ],
+  flashcards:[
+    {front:'What was Accenture Song called before 2022?', back:'Accenture Interactive. Song was announced in April 2022.'},
+    {front:'Fjord', back:'Service design studio founded in 2001; joined Accenture in 2013.'},
+    {front:'Bionic', back:'Venture-style innovation firm acquired in 2021; source of the Growth OS.'},
+    {front:'Work & Co', back:'Digital product studio; its acquisition completed in January 2024.'},
+    {front:'The four verbs', back:'See customers as people, solve for relevance, simplify for ease of experience, scale for growth.'},
+    {front:'How should you read Song\u2019s statistics?', back:'As correlations from Accenture\u2019s own surveys and models. They are hypotheses to test, not proof of cause.'}
+  ]
+});
+MODULES.push({
+  id:'m2', title:'Life centricity', group:'Foundations', phase:'ink',
+  objectives:[
+    'Explain how life-centric differs from product-centric and customer-centric thinking.',
+    'Describe life forces and why a static customer profile falls short.',
+    'List the five plays and map them to the See, Solve and Simplify verbs.'
+  ],
+  content:`
+<p class="lede">Song\u2019s central idea is a claim about what to optimize. Product-centric companies optimize performance. Customer-centric companies optimize experience. Life-centric companies optimize relevance to people whose lives keep changing.</p>
+
+<h3>From product to customer to life</h3>
+<p>In a 2022 Harvard Business Review article, David Droga and Baiju Shah describe the history in two steps. Businesses first moved from a product-centric approach, focused on performance, to a customer-centric one, focused on experience. Their argument is that even the customer-centric picture is now too narrow. People are complex, and they are pushed around by forces no company controls. A life-centric company stays attuned to those forces, such as technology, health and culture, and keeps evolving its products, marketing, sales and service as they shift.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 350" role="img" aria-label="Three eras of focus, then a person at the center surrounded by six life forces: technology, culture, health, economy, environment and politics.">
+  <rect x="10" y="10" width="170" height="78" rx="8" class="bx"/>
+  <text x="95" y="36" text-anchor="middle" class="b" font-size="15">Product-centric</text>
+  <text x="95" y="56" text-anchor="middle" class="m" font-size="12">Optimize performance</text>
+  <text x="95" y="73" text-anchor="middle" class="m" font-size="11.5">The person is a buyer</text>
+
+  <rect x="215" y="10" width="170" height="78" rx="8" class="bx"/>
+  <text x="300" y="36" text-anchor="middle" class="b" font-size="15">Customer-centric</text>
+  <text x="300" y="56" text-anchor="middle" class="m" font-size="12">Optimize experience</text>
+  <text x="300" y="73" text-anchor="middle" class="m" font-size="11.5">Needs assumed stable</text>
+
+  <rect x="420" y="10" width="170" height="78" rx="8" class="f-ink"/>
+  <text x="505" y="36" text-anchor="middle" class="w b" font-size="15">Life-centric</text>
+  <text x="505" y="56" text-anchor="middle" class="w" font-size="12">Sustain relevance</text>
+  <text x="505" y="73" text-anchor="middle" class="w" font-size="11.5">Needs shift with life</text>
+  <path d="M182,49 L213,49" class="ln" marker-end="url(#arw)"/>
+  <path d="M387,49 L418,49" class="ln" marker-end="url(#arw)"/>
+
+  <circle cx="300" cy="225" r="92" class="ring"/>
+  <g class="ln">
+    <line x1="300" y1="133" x2="300" y2="225"/><line x1="380" y1="179" x2="300" y2="225"/><line x1="380" y1="271" x2="300" y2="225"/>
+    <line x1="300" y1="317" x2="300" y2="225"/><line x1="220" y1="271" x2="300" y2="225"/><line x1="220" y1="179" x2="300" y2="225"/>
+  </g>
+  <circle cx="300" cy="225" r="46" class="ring-s"/>
+  <text x="300" y="222" text-anchor="middle" class="b" font-size="12.5">One person,</text>
+  <text x="300" y="240" text-anchor="middle" class="b" font-size="12.5">many roles</text>
+  <g class="f-solve">
+    <circle cx="300" cy="133" r="6"/><circle cx="380" cy="179" r="6"/><circle cx="380" cy="271" r="6"/>
+    <circle cx="300" cy="317" r="6"/><circle cx="220" cy="271" r="6"/><circle cx="220" cy="179" r="6"/>
+  </g>
+  <text x="300" y="120" text-anchor="middle" font-size="12.5">Technology</text>
+  <text x="392" y="183" font-size="12.5">Culture</text>
+  <text x="392" y="275" font-size="12.5">Health</text>
+  <text x="300" y="339" text-anchor="middle" font-size="12.5">Economy</text>
+  <text x="208" y="275" text-anchor="end" font-size="12.5">Environment</text>
+  <text x="208" y="183" text-anchor="end" font-size="12.5">Politics</text>
+
+  <text x="10" y="196" class="b" font-size="12">Outside forces</text>
+  <text x="10" y="213" class="m" font-size="11.5">shift what people</text>
+  <text x="10" y="228" class="m" font-size="11.5">need, often with</text>
+  <text x="10" y="243" class="m" font-size="11.5">little warning.</text>
+
+  <text x="462" y="196" class="b" font-size="12">Roles they play</text>
+  <text x="462" y="213" class="m" font-size="11.5">Parent, citizen,</text>
+  <text x="462" y="228" class="m" font-size="11.5">friend, student,</text>
+  <text x="462" y="243" class="m" font-size="11.5">activist.</text>
+</svg>
+<figcaption>Each step widens what the company pays attention to. In the life-centric view the same person plays several roles, and outside forces keep changing what they need.</figcaption>
+</figure>
+
+<h3>Why Song says this is urgent</h3>
+<p>Song surveyed 1,700 C-suite leaders across two waves in 2022. In the second wave, more than 95 percent said their customers were changing faster than they could change their businesses. A few months earlier the figure had been 88 percent. Nearly all executives were speeding up their digital transformations, yet 97 percent admitted that this at best lets them keep pace and does not create new growth. The companies that were pulling ahead were not doing more of the same. They were using technology creatively to solve emerging customer needs.</p>
+
+<h3>What the modeling claims</h3>
+<p>Song built a capability score for life centricity and modeled how companies with high scores compared with peers. It predicts that leaders are about 3 times more likely to beat peers on speed to market and nearly 5 times more likely to beat them on customer lifetime value. The model also predicts that leaders outgrow peers by about nine percentage points a year. For a $10 billion company, that is the gap between adding roughly $4 billion of revenue over five years and losing about $1 billion.</p>
+<div class="callout warn"><span class="ct">Read these as modeled, not measured</span>
+<p>These figures are forecasts from a statistical model fed with survey answers. They show where Song\u2019s data points, not what your company would gain.</p></div>
+
+<h3>The five plays</h3>
+<p>The playbook distills the approach into five plays that leading companies make. The table maps each to a verb and lists the edge that firms focused on that play were more likely to show, according to Song\u2019s analysis.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Play</th><th>Verb</th><th>What it asks for</th><th>Reported edge</th></tr></thead>
+<tbody>
+<tr><td class="k">1. Gain a profound understanding of people</td><td>See</td><td>See people as multi-dimensional, using dynamic data and always-on monitoring of life forces.</td><td>More likely to reach top profitability growth (16%) and employee retention (19%).</td></tr>
+<tr><td class="k">2. Broaden your canvas for value creation</td><td>Solve</td><td>Create customer, social, environmental and employee value, not only financial value.</td><td>More likely to reach top market share growth (26%) and customer lifetime value (24%).</td></tr>
+<tr><td class="k">3. Creatively transcend industry norms</td><td>Solve</td><td>Apply technology and talent beyond the boundaries of your industry.</td><td>More likely to reach top revenue growth from new ventures (32%) and speed to market (29%).</td></tr>
+<tr><td class="k">4. Design a delightful experience continuum</td><td>Simplify</td><td>Connect product, marketing, commerce, sales and service into one experience.</td><td>More likely to reach top customer satisfaction (26%) and speed to market (26%).</td></tr>
+<tr><td class="k">5. Build a fluid operation across functions</td><td>Simplify</td><td>Replace siloed teams with de-siloed ones that move with the customer.</td><td>More likely to reach top revenue growth (28%) and profitability growth (23%).</td></tr>
+</tbody></table></div>
+
+<h3>One worked example: Kimberly-Clark</h3>
+<p>Consumer goods makers often sit at arm\u2019s length from their customers, with retailers in between. Kimberly-Clark wanted a direct, two-way relationship. It pulled first-party data to the fore and combined brand data from several sources into one picture of customer needs. In the Huggies app, new parents get informational tools and loyalty rewards. People buying cold medicine can be pointed to tissues and related products they might need. The gain is a human-insight advantage: the company can see needs across its services and brands and play a larger role in customers\u2019 lives.</p>
+
+<div class="callout"><span class="ct">A common misreading</span>
+<p>Life centricity does not mean collecting more personal data for its own sake. The move is to widen the question from \u201Cwho buys our product?\u201D to \u201Cwhat is happening in this person\u2019s life?\u201D In practice that can point toward a service or a partnership rather than another feature. That last step is this course\u2019s reading, not a claim from the playbook.</p></div>
+`,
+  keyTerms:[
+    {term:'Product-centric', def:'Strategy centered on product performance.'},
+    {term:'Customer-centric', def:'Strategy centered on the customer\u2019s experience, usually assuming stable needs.'},
+    {term:'Life-centric', def:'Strategy that treats people as changing, multi-dimensional, and shaped by outside forces.'},
+    {term:'Life forces', def:'Outside pressures such as technology, culture, health, economics, environment and politics that shape what people need.'},
+    {term:'Relevance', def:'Song\u2019s stated goal: staying meaningfully useful to people as their lives change.'},
+    {term:'Experience continuum', def:'One connected experience across product, marketing, commerce, sales and service.'}
+  ],
+  quiz:[
+    {q:'What does a life-centric company add to a customer-centric one?', options:['A larger marketing budget.','A view of customers as changing people shaped by outside forces, with relevance as the goal.','A single global brand identity.','A rule to sell only through owned channels.'], correct:1, explain:'The shift is in what you pay attention to: not just the customer\u2019s experience with you, but the life forces that keep changing what they need.'},
+    {q:'Which of these is NOT one of the five plays in the life centricity playbook?', options:['Gain a profound understanding of people','Broaden your canvas for value creation','Maximize share of wallet through upselling','Build a fluid operation across functions'], correct:2, explain:'Upselling is not one of the plays. The five are: understand people, broaden the canvas for value, transcend industry norms, design an experience continuum, and build a fluid operation.'},
+    {q:'Plays 4 and 5 both fall under which verb?', options:['See','Solve','Simplify','Scale'], correct:2, explain:'The experience continuum and the fluid operation are the two halves of Simplify: one is what customers experience, the other is the organization that makes it possible.'},
+    {q:'The playbook says life-centric leaders are about 3 times more likely to lead on speed to market. Where does that come from?', options:['A controlled experiment that assigned companies to strategies.','A predictive model built on Accenture\u2019s executive survey.','Audited financial statements of every client.','A government study.'], correct:1, explain:'It is a modeled result from survey data. Useful as a signal, but it does not prove that adopting the plays caused the outperformance.'},
+    {q:'Which is the best example of a life force?', options:['A competitor\u2019s price cut.','A shift in culture, health awareness or technology that changes what people need.','A product feature request from a single customer.','A change in your internal org chart.'], correct:1, explain:'Life forces are outside pressures on people\u2019s lives, such as technology, culture, health, economics, environment and politics.'}
+  ],
+  flashcards:[
+    {front:'Three eras of focus', back:'Product-centric (performance), customer-centric (experience), life-centric (relevance to changing lives).'},
+    {front:'What is a life force?', back:'An outside pressure, such as technology, culture, health, economy, environment or politics, that changes what people need.'},
+    {front:'Play 1', back:'Gain a profound understanding of people. This is the See verb.'},
+    {front:'Play 3', back:'Creatively transcend industry norms by applying technology and talent beyond your industry.'},
+    {front:'The urgency stat', back:'More than 95% of executives said customers change faster than they can change their businesses; 97% said tech-led transformation at best keeps pace.'},
+    {front:'Modeled advantage of life-centric leaders', back:'About 3x on speed to market, nearly 5x on customer lifetime value, and around nine points more annual growth. Modeled from survey data.'},
+    {front:'Kimberly-Clark example', back:'Used first-party data and the Huggies app to serve parents directly, moving beyond retailers as the only link to customers.'}
+  ]
+});
+MODULES.push({
+  id:'m3', title:'See', group:'The four verbs', phase:'see',
+  objectives:[
+    'Contrast a static buyer profile with a dynamic, multi-dimensional view of people.',
+    'Explain how Song produces Life Trends and how a product team should use trends.',
+    'Describe the revalidation and do-versus-say habits that keep understanding fresh.'
+  ],
+  content:`
+<p class="lede">Seeing is the first verb. It asks you to replace a buyer with a persona by a person with a life, and to keep updating that picture because the life keeps moving.</p>
+
+<h3>Static buyers versus dynamic people</h3>
+<p>The life centricity playbook criticizes seeing people as buyers with fixed traits who are unaffected by what is happening around them. People play several roles at once, such as parent, citizen, friend or student, and each role brings its own needs. Outside events push those needs around. The playbook recommends combining human and machine intelligence: AI, analytics, ethnography, trend forecasting, and deep qualitative and quantitative research. Together they produce customer segments that evolve as customers do. The playbook also suggests always-on monitoring of political, technological, cultural and environmental change, so opportunities are visible early.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 300" role="img" aria-label="Top: the four-step pipeline that produces Life Trends. Bottom: a static persona compared with a dynamic segment.">
+  <text x="10" y="18" class="b" font-size="13">How Life Trends gets made</text>
+  <rect x="10" y="28" width="130" height="94" rx="8" class="bx-see"/>
+  <text x="20" y="52" class="b" font-size="13">Scout</text>
+  <text x="20" y="72" class="m" font-size="11.5">40+ studios spot</text>
+  <text x="20" y="88" class="m" font-size="11.5">signals in their</text>
+  <text x="20" y="104" class="m" font-size="11.5">own countries</text>
+  <rect x="160" y="28" width="130" height="94" rx="8" class="bx-see"/>
+  <text x="170" y="52" class="b" font-size="13">Pitch</text>
+  <text x="170" y="72" class="m" font-size="11.5">Ideas are argued</text>
+  <text x="170" y="88" class="m" font-size="11.5">out in workshops</text>
+  <text x="170" y="104" class="m" font-size="11.5">by mixed teams</text>
+  <rect x="310" y="28" width="130" height="94" rx="8" class="bx-see"/>
+  <text x="320" y="52" class="b" font-size="13">Synthesize</text>
+  <text x="320" y="72" class="m" font-size="11.5">A small team merges</text>
+  <text x="320" y="88" class="m" font-size="11.5">pitches and adds</text>
+  <text x="320" y="104" class="m" font-size="11.5">expert interviews</text>
+  <rect x="460" y="28" width="130" height="94" rx="8" class="bx-see"/>
+  <text x="470" y="52" class="b" font-size="13">Publish</text>
+  <text x="470" y="72" class="m" font-size="11.5">Five trends plus</text>
+  <text x="470" y="88" class="m" font-size="11.5">consumer survey</text>
+  <text x="470" y="104" class="m" font-size="11.5">data each year</text>
+  <path d="M141,75 L158,75" class="ln" marker-end="url(#arw)"/>
+  <path d="M291,75 L308,75" class="ln" marker-end="url(#arw)"/>
+  <path d="M441,75 L458,75" class="ln" marker-end="url(#arw)"/>
+
+  <text x="10" y="158" class="b" font-size="13">From static to dynamic</text>
+  <rect x="10" y="168" width="270" height="112" rx="8" class="bx"/>
+  <text x="24" y="194" class="b" font-size="14">Static persona</text>
+  <text x="24" y="217" class="m" font-size="12">A fixed buyer profile:</text>
+  <text x="24" y="235" class="m" font-size="12">same needs, same traits,</text>
+  <text x="24" y="253" class="m" font-size="12">untouched by events.</text>
+  <rect x="320" y="168" width="270" height="112" rx="8" class="bx-see"/>
+  <text x="334" y="194" class="b" font-size="14">Dynamic segment</text>
+  <text x="334" y="217" class="m" font-size="12">People whose needs move</text>
+  <text x="334" y="235" class="m" font-size="12">with life forces, updated using</text>
+  <text x="334" y="253" class="m" font-size="12">data, ethnography and research.</text>
+  <path d="M283,224 L317,224" class="ln" marker-end="url(#arw)"/>
+</svg>
+<figcaption>Life Trends is one of Song\u2019s standing sources of \u201Cseeing.\u201D The lower panel shows the shift the playbook asks every product team to make.</figcaption>
+</figure>
+
+<h3>Cadence and behavior</h3>
+<p>Seeing is a habit, not a project. In Song\u2019s 2023 survey of 970 executives, companies that revalidated their products and services at least once a year showed a 24 percent higher revenue growth rate between 2020 and 2022 than peers who revalidated less often. Of the companies that used emerging technology to keep in sync with customer needs, 83 percent also validated those needs at least annually.</p>
+<p>The same report stresses the gap between what people say and what they do. It recommends watching behavior and tracking quiet signals early, before they become obvious trends. Generative AI can help by digging into niche details that get lost when data is aggregated, but it still needs human judgment to decide what is real. Companies can also build funnels that feed several listening streams into one model of each customer, so nuance is not lost in oversimplification.</p>
+
+<h3>How Life Trends is made</h3>
+<p>Life Trends is Song\u2019s annual report on shifts in human behavior and attitudes. The 2025 edition was billed as the 18th and the 2026 edition as the 19th. The 2026 edition describes the method: designers, creatives, technologists, sociologists and anthropologists across more than 40 design studios and creative agencies study signals of change in their countries and pitch trend ideas in workshops. A smaller team then synthesizes the pitches, interviews senior leaders across industries plus academics and futurists, and shapes the trends. Consumer survey data backs each edition.</p>
+
+<h4>The 2025 trends, from the primary report</h4>
+<ul>
+  <li><strong>Cost of hesitations.</strong> People increasingly doubt what they see online. Sixty percent said they questioned the authenticity of online content more than before.</li>
+  <li><strong>The parent trap.</strong> Parents and policymakers push for guardrails on young people\u2019s online lives.</li>
+  <li><strong>Impatience economy.</strong> People look to peers and crowds for faster routes to health, wealth and happiness. Sixty-three percent get inspiration from social media on doing things smarter.</li>
+  <li><strong>The dignity of work.</strong> Employees feel emotionally distant from transactional work, and employee experience shapes customer experience.</li>
+  <li><strong>Social rewilding.</strong> Forty-two percent said their most enjoyable experience of the past week was physical, against fifteen percent for a digital one.</li>
+</ul>
+<h4>The 2026 trends, from secondary summaries</h4>
+<ul>
+  <li><strong>Stability premium.</strong> People value reassurance, predictability and trust.</li>
+  <li><strong>Human journeys.</strong> Progress, mastery and purpose matter more than speed.</li>
+  <li><strong>Finding Neo.</strong> AI should serve human experience, in a world where AI summaries replace many site visits.</li>
+  <li><strong>Good vibrations.</strong> Joy, play and real-world connection are becoming commercial signals.</li>
+  <li><strong>Coming of age.</strong> Ambition, energy and consumption are no longer tied to age.</li>
+</ul>
+<div class="callout warn"><span class="ct">Provenance note</span>
+<p>I could not open the 2026 report PDF, so the 2026 list comes from workshop descriptions, a podcast summary and trade write-ups. Check the original before you quote specifics. The 2025 figures come from Accenture\u2019s own report page.</p></div>
+
+<h3>Using a trend without being used by it</h3>
+<p>These are the course\u2019s suggestions, not Song\u2019s instructions. Treat a trend as a hypothesis about attitudes. Then check it against behavior in your own data. For each product idea, ask which trend it rides and which it fights. A finding that people enjoy physical experiences more does not mean your app should vanish. It may mean your product should make room for offline moments.</p>
+
+<div class="callout"><span class="ct">Try it: write a life-force brief</span>
+<p>Answer five questions about your own product:</p>
+<ol>
+  <li>Which life forces (technology, culture, health, economy, environment, politics) most shape your customer\u2019s life?</li>
+  <li>What role is the person playing when they meet your product?</li>
+  <li>What behavior would reveal a need before they could describe it?</li>
+  <li>When did you last revalidate that your product still solves the need?</li>
+  <li>Which current trend does your idea ride, and which does it fight?</li>
+</ol></div>
+`,
+  keyTerms:[
+    {term:'Dynamic segment', def:'A customer group whose definition updates as people and their circumstances change.'},
+    {term:'Life force monitor', def:'An always-on way of watching political, technological, cultural and environmental change.'},
+    {term:'Revalidation', def:'Regularly re-checking that a product still solves a real need.'},
+    {term:'Do versus say gap', def:'The difference between what people report and what they actually do.'},
+    {term:'Life Trends', def:'Song\u2019s annual report on human behavior and attitude shifts, built from a global studio network plus research.'}
+  ],
+  quiz:[
+    {q:'What is the key difference between a static persona and a dynamic segment?', options:['A dynamic segment has more demographic fields.','A dynamic segment is updated as people\u2019s needs shift with life forces.','A static persona is built from interviews and a dynamic one from surveys.','There is no difference; the terms are synonyms.'], correct:1, explain:'The playbook criticizes buyers with fixed traits. Dynamic segments evolve as customers do, using data, ethnography, trend forecasting and research.'},
+    {q:'What did Song\u2019s 2023 survey find about revalidating products at least once a year?', options:['It made no difference to growth.','Those companies had a 24 percent higher revenue growth rate between 2020 and 2022.','Those companies had lower costs.','It only helped very small companies.'], correct:1, explain:'The survey associates at least annual revalidation with higher revenue growth. It is a correlation, but the habit itself is inexpensive to adopt.'},
+    {q:'Which best describes how Life Trends is produced?', options:['One futurist writes it alone.','Studios across many countries surface signals, a small team synthesizes and interviews experts, and survey data backs the result.','It is generated entirely by an AI model.','It is a copy of a government report.'], correct:1, explain:'The process combines bottom-up signals from 40+ studios with expert interviews and consumer research.'},
+    {q:'What is the best way to use a trend in product work?', options:['Copy it into your feature roadmap.','Treat it as a hypothesis, test it against behavior in your own data, and ask which trend the idea rides or fights.','Ignore any trend that is not in your industry.','Wait until three consultancies agree.'], correct:1, explain:'Trends describe attitudes across large groups. Your product decision still needs local behavioral evidence.'},
+    {q:'Which approach best closes the do-versus-say gap?', options:['Asking customers to rate features more carefully.','Observing what people actually do and tracking quiet signals early.','Running one large survey every five years.','Trusting the loudest customer.'], correct:1, explain:'The growth report stresses watching behavior, with generative AI going deeper into data and humans validating what it finds.'}
+  ],
+  flashcards:[
+    {front:'Static persona versus dynamic segment', back:'Static: fixed traits, unaffected by events. Dynamic: needs move with life forces and the profile updates continuously.'},
+    {front:'Tools the playbook lists for seeing people', back:'AI, analytics, ethnography, trend forecasting, and deep qualitative and quantitative research.'},
+    {front:'Revalidation finding', back:'Companies revalidating at least annually had a 24% higher revenue growth rate (2020 to 2022) than peers who did it less often.'},
+    {front:'Who builds Life Trends?', back:'Designers, creatives, technologists, sociologists and anthropologists across 40+ studios, plus a synthesis team and expert interviews.'},
+    {front:'Two 2025 trends with the strongest data', back:'Cost of hesitations (60% question authenticity more) and social rewilding (42% physical versus 15% digital most enjoyable).'},
+    {front:'Why treat a trend as a hypothesis?', back:'It describes attitudes in aggregate. You still need behavioral evidence from your own customers.'}
+  ]
+});
+MODULES.push({
+  id:'m4', title:'Solve', group:'The four verbs', phase:'solve',
+  objectives:[
+    'Explain the shift from total addressable market to total addressable need.',
+    'Distinguish outside-in from inside-out ways of finding new value.',
+    'Rewrite a product statement as a need statement and generate options beyond a new feature.'
+  ],
+  content:`
+<p class="lede">Solving for relevance means starting from a human need, then asking how many different ways your company could serve it. The trap Song warns about is starting from a product and hunting for someone to buy it.</p>
+
+<h3>From market to need</h3>
+<p>Song\u2019s growth report frames the shift as moving from <strong>total addressable market</strong> to <strong>total addressable need</strong>. A market is defined by what you already sell and to whom. A need is defined by what people are trying to get done in their lives, whoever currently serves it. Because needs cut across industries, the second view is larger and less crowded with familiar rivals.</p>
+<p>The 2023 survey shows how common the trap is. Sixty-seven percent of executives said their top competitors are large companies in their own industry selling similar things. Seventy-three percent said their company had been chasing solutions without first asking what needs solving. And 83 percent said they were not collaborating aggressively enough across silos, which leads to fragmented experiences.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 320" role="img" aria-label="A small circle for your market today inside a large dashed circle for total addressable need, with two arrows: outside-in from an unmet need and inside-out from existing capabilities.">
+  <circle cx="230" cy="165" r="140" style="fill:var(--solve-soft);stroke:var(--solve);stroke-width:1.8;stroke-dasharray:7 5"/>
+  <text x="230" y="60" text-anchor="middle" class="b" font-size="14">Total addressable need</text>
+  <text x="230" y="78" text-anchor="middle" class="m" font-size="11.5">Everything people need</text>
+  <text x="230" y="93" text-anchor="middle" class="m" font-size="11.5">in this part of life</text>
+  <circle cx="180" cy="190" r="62" class="ring-s"/>
+  <text x="180" y="186" text-anchor="middle" class="b" font-size="12.5">Your market</text>
+  <text x="180" y="203" text-anchor="middle" class="m" font-size="11.5">what you sell now</text>
+  <circle cx="300" cy="125" r="6" class="f-solve"/>
+  <circle cx="318" cy="212" r="6" class="f-solve"/>
+  <path d="M374,76 L308,120" class="ln" marker-end="url(#arw)"/>
+  <circle cx="384" cy="70" r="11" class="f-ink"/><text x="384" y="74.5" text-anchor="middle" class="w b" font-size="12">A</text>
+  <path d="M243,206 L308,212" class="ln" marker-end="url(#arw)"/>
+  <circle cx="276" cy="236" r="11" class="f-ink"/><text x="276" y="240.5" text-anchor="middle" class="w b" font-size="12">B</text>
+  <text x="405" y="105" class="b" font-size="13">A. Outside-in</text>
+  <text x="405" y="124" class="m" font-size="12">Spot an unmet need,</text>
+  <text x="405" y="141" class="m" font-size="12">then build something</text>
+  <text x="405" y="158" class="m" font-size="12">to meet it.</text>
+  <text x="405" y="205" class="b" font-size="13">B. Inside-out</text>
+  <text x="405" y="224" class="m" font-size="12">Find new uses for the</text>
+  <text x="405" y="241" class="m" font-size="12">technology and talent</text>
+  <text x="405" y="258" class="m" font-size="12">you already have.</text>
+</svg>
+<figcaption>Your current market is a small slice of the needs in a part of people\u2019s lives. The two arrows are the two routes the playbook describes for reaching the rest: start from the need, or start from your capabilities.</figcaption>
+</figure>
+
+<h3>Two ways to find new value</h3>
+<p><strong>Outside-in.</strong> Johnson Controls made building equipment such as HVAC gear and, at one time, lead batteries. Its leaders noticed that CEOs were buying productive workplaces, not chiller controls. Monitoring life forces, they also saw that environmental concern was rising and remote work was pressuring the value of office buildings. The company gave up profitable but slow-growth lines such as batteries. It repositioned as a sustainability partner built on AI and software. The playbook notes that buildings account for around 40 percent of global carbon emissions, so the need was large.</p>
+<p><strong>Inside-out.</strong> Qualcomm made its name in smartphones. Its product leaders asked a different question: where else can the same technology and skills apply? The answer was helping things connect. It moved into cars, smart homes, smart cities and factories. Ride-sharing apps followed the same logic when they saw themselves as competing for any movement of people or goods, and added bikes, scooters, food and product orders.</p>
+<p>A third example combines both. Telkom Business noticed that its small-business customers still relied on a printed Yellow Pages for shopping and visibility. It built an e-commerce site, then saw a chance to build a marketplace where businesses could buy, sell and connect with each other, which created value beyond a single sale.</p>
+
+<h3>Reword the problem</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Product statement</th><th>Need statement</th><th>What it opens up</th></tr></thead>
+<tbody>
+<tr><td>We make HVAC controls.</td><td>People want workplaces that are productive, comfortable and low in carbon.</td><td>Software, monitoring and sustainability services (the Johnson Controls move).</td></tr>
+<tr><td>We sell smartphone chips.</td><td>People and machines need to connect.</td><td>Cars, homes, factories and cities (the Qualcomm move).</td></tr>
+<tr><td>We print a business directory.</td><td>Small businesses need an easier way to find, buy from and sell to each other.</td><td>A marketplace and an ecosystem (the Telkom move).</td></tr>
+</tbody></table></div>
+<p>The rewordings are the course\u2019s illustrations of the cases above, not quotations from the clients.</p>
+
+<h3>What the survey says about solving faster</h3>
+<ul>
+  <li>Companies that co-created with customers while experimenting fast were twice as likely to outperform peers on revenue growth.</li>
+  <li>Companies that increased their learning velocity through small experiments across most of their innovation work saw a 17 percent improvement in revenue growth rate.</li>
+  <li>Asked about the next three years, executives expected a boost in new and organic revenue growth of 26 percent from using data in new ways, 42 percent from quickly rethinking partnerships, and 17 percent from finding new ways to serve existing customers.</li>
+</ul>
+<div class="callout warn"><span class="ct">Expectations are not outcomes</span>
+<p>The last bullet reports what executives expect, not what happened. Weigh it accordingly. The first two are associations between past behavior and past growth.</p></div>
+
+<div class="callout"><span class="ct">The course\u2019s working rule for a product brief</span>
+<p>Write the need and the life context before the solution. Then list at least three ways to serve it, and include one that is not a new product feature, such as a partnership, a data service or a marketplace. This synthesizes the plays above; it is not a Song template.</p></div>
+`,
+  keyTerms:[
+    {term:'Total addressable market', def:'The revenue pool defined by what you sell today and to whom.'},
+    {term:'Total addressable need', def:'The wider set of needs people have in an area of life, regardless of who serves them now.'},
+    {term:'Outside-in', def:'Start from an unmet customer need, then build to meet it.'},
+    {term:'Inside-out', def:'Start from your assets and find new applications for them.'},
+    {term:'Right to win', def:'The enterprise assets that give you an advantage in a new or existing market.'}
+  ],
+  quiz:[
+    {q:'How does Song\u2019s growth report define total addressable need?', options:['The largest possible market share for your current product.','A focus on customers\u2019 needs, so you can reach new markets and solve new problems beyond your current customers.','The number of people who could buy any product.','The budget a customer has available.'], correct:1, explain:'The report contrasts a market defined by your existing offering with a need defined by what people are trying to get done.'},
+    {q:'Which is an example of an inside-out move?', options:['Johnson Controls noticing that CEOs wanted productive workplaces.','Qualcomm applying its connectivity technology in cars, homes and factories.','A bank surveying customers about branch hours.','A retailer cutting its prices.'], correct:1, explain:'Inside-out means starting from your capabilities and finding new uses. Qualcomm asked where else its technology and skills could apply.'},
+    {q:'What did Johnson Controls do that shows outside-in thinking?', options:['It noticed rising environmental concern and remote-work pressure on buildings, then reoriented as a sustainability partner.','It copied a competitor\u2019s battery.','It increased lead battery production.','It stopped investing in software.'], correct:0, explain:'It watched life forces, spotted unmet needs and changed its business to meet them, even giving up profitable but slow-growth lines.'},
+    {q:'Seventy-three percent of executives said they had been chasing solutions without asking what needs solving. What is the lesson?', options:['Executives are poor at brainstorming.','Companies often start from what they can build, not from a need, so briefs should start from the need.','Solutions are unimportant.','Customers do not know what they want.'], correct:1, explain:'The finding is about starting points. A need-first brief is the corrective the course recommends.'},
+    {q:'Executives expected a 42 percent boost from quickly rethinking partnerships. How should you treat that figure?', options:['As proof that partnerships increase growth by 42 percent.','As an executive expectation about the future, which is weaker evidence than an observed outcome.','As a guaranteed result.','As irrelevant.'], correct:1, explain:'The report describes expected growth over the next three years. Separate expectations from observed outcomes when you weigh evidence.'}
+  ],
+  flashcards:[
+    {front:'Total addressable market versus need', back:'Market: what you sell now and to whom. Need: what people are trying to get done, whoever serves it.'},
+    {front:'Outside-in', back:'Find a new customer need first, then build creatively to meet it. Example: Johnson Controls as a sustainability partner.'},
+    {front:'Inside-out', back:'Find new applications for existing technology and talent. Example: Qualcomm moving into cars and smart homes.'},
+    {front:'The 73% finding', back:'73% of executives said they chased solutions without first asking what needed solving.'},
+    {front:'Co-creation finding', back:'Companies that co-created with customers while experimenting fast were twice as likely to outperform on revenue growth.'},
+    {front:'Telkom Business example', back:'Moved small-business customers from a printed Yellow Pages to e-commerce, then to a marketplace ecosystem.'}
+  ]
+});
+MODULES.push({
+  id:'m5', title:'Build and validate', group:'The four verbs', phase:'solve',
+  objectives:[
+    'Walk through the stages Song uses to take a need from idea to scaled product, and the gates between them.',
+    'Explain the Growth OS principles inherited from Bionic.',
+    'Describe how AI speeds up validation and where it can mislead.'
+  ],
+  content:`
+<p class="lede">Song\u2019s approach to creating new products borrows the logic of venture investing: place many small bets, collect evidence of what people actually do, and scale only what earns it.</p>
+
+<h3>The stages</h3>
+<p>Song\u2019s growth and product innovation service describes a sequence that runs from need to scale. It first identifies new need states, revenue streams and markets, then assesses the company\u2019s right to win, and then picks new opportunities. Next it validates product-market fit by testing the assumptions behind desirability and viability. It designs and builds a minimum viable product, pilots it, and iterates on what it learns. Finally it scales and evolves, and helps the client organize product-oriented teams and a growth-ready operating model. Song stresses that growth is a continuous practice, not a one-time event.</p>
+<div class="callout warn"><span class="ct">Snapshot note</span>
+<p>The service page I drew this from has since moved, so I could only read a search snapshot of its text. Treat the sequence as accurate in outline, and check Song\u2019s current site for wording.</p></div>
+
+<figure class="fig">
+<svg viewBox="0 0 600 340" role="img" aria-label="Six stages in two rows, Find and Prove, with evidence gates between them, feeding a Scale and evolve bar and looping back to the start.">
+  <text x="14" y="17" class="b" font-size="13">Find</text>
+  <rect x="14" y="26" width="168" height="66" rx="8" class="bx-solve"/>
+  <text x="24" y="48" class="b" font-size="13">Identify needs</text>
+  <text x="24" y="66" class="m" font-size="11.5">New need states, revenue</text>
+  <text x="24" y="81" class="m" font-size="11.5">streams and markets</text>
+  <rect x="216" y="26" width="168" height="66" rx="8" class="bx-solve"/>
+  <text x="226" y="48" class="b" font-size="13">Assess right to win</text>
+  <text x="226" y="66" class="m" font-size="11.5">Which of your assets</text>
+  <text x="226" y="81" class="m" font-size="11.5">give you an edge here?</text>
+  <rect x="418" y="26" width="168" height="66" rx="8" class="bx-solve"/>
+  <text x="428" y="48" class="b" font-size="13">Pick opportunities</text>
+  <text x="428" y="66" class="m" font-size="11.5">New businesses, products</text>
+  <text x="428" y="81" class="m" font-size="11.5">and services to pursue</text>
+  <path d="M183,59 L214,59" class="ln" marker-end="url(#arw)"/>
+  <path d="M385,59 L416,59" class="ln" marker-end="url(#arw)"/>
+
+  <text x="14" y="128" class="b" font-size="13">Prove</text>
+  <path d="M502,93 L502,112 L98,112 L98,136" class="ln" marker-end="url(#arw)"/>
+  <rect x="14" y="138" width="168" height="66" rx="8" class="bx-solve"/>
+  <text x="24" y="160" class="b" font-size="13">Validate the idea</text>
+  <text x="24" y="178" class="m" font-size="11.5">Test desirability and</text>
+  <text x="24" y="193" class="m" font-size="11.5">viability assumptions</text>
+  <rect x="216" y="138" width="168" height="66" rx="8" class="bx-solve"/>
+  <text x="226" y="160" class="b" font-size="13">Build an MVP</text>
+  <text x="226" y="178" class="m" font-size="11.5">The smallest thing that</text>
+  <text x="226" y="193" class="m" font-size="11.5">tests the core value</text>
+  <rect x="418" y="138" width="168" height="66" rx="8" class="bx-solve"/>
+  <text x="428" y="160" class="b" font-size="13">Pilot and iterate</text>
+  <text x="428" y="178" class="m" font-size="11.5">Learn from real use,</text>
+  <text x="428" y="193" class="m" font-size="11.5">then decide what next</text>
+  <path d="M183,171 L214,171" class="ln" marker-end="url(#arw)"/>
+  <path d="M385,171 L416,171" class="ln" marker-end="url(#arw)"/>
+  <g class="f-solve">
+    <path d="M300,105 L307,112 L300,119 L293,112 Z"/>
+    <path d="M199,164 L206,171 L199,178 L192,171 Z"/>
+    <path d="M401,164 L408,171 L401,178 L394,171 Z"/>
+  </g>
+  <path d="M14,222 l7,-7 l7,7 l-7,7 z" class="f-solve"/>
+  <text x="34" y="226" class="m" font-size="12">Evidence gate: keep going, change course, or stop</text>
+
+  <path d="M502,205 L502,246" class="ln" marker-end="url(#arw)"/>
+  <rect x="14" y="248" width="572" height="62" rx="8" class="bx-scale"/>
+  <text x="26" y="268" class="b" font-size="13">Scale and evolve</text>
+  <text x="26" y="285" class="m" font-size="11.5">Use live data to optimize and add capability;</text>
+  <text x="26" y="300" class="m" font-size="11.5">set up product-oriented teams and a growth-ready model.</text>
+  <path d="M14,279 L5,279 L5,60 L12,60" class="ln-d" marker-end="url(#arw)"/>
+  <text x="300" y="331" text-anchor="middle" class="m" font-size="11.5">Loop back: revalidate the need and retire what no longer fits</text>
+</svg>
+<figcaption>The path from need to scale. Each diamond is a decision point where evidence, not enthusiasm, decides whether an idea continues.</figcaption>
+</figure>
+
+<h3>Where the Growth OS comes from</h3>
+<p>Bionic, acquired in 2021, packaged a method for large companies to create new businesses the way founders and early-stage investors do. Its co-founder David Kidder and Christina Wallace wrote it up in <em>New to Big</em>. The premise is that established firms are skilled at making big businesses bigger but poor at discovering new ones. They argue that entrepreneurship and venture capital are, together, a form of management for discovering and building new businesses, and that a company needs it alongside the management of its existing ones.</p>
+<p>The book\u2019s recurring principles, as its publisher summarizes them, are to focus on what consumers do rather than what they say, to celebrate productive failure, to take a portfolio approach, and to learn from the outside in. Kidder has also argued that most organizations do not have a talent or money problem but a permissions problem, and that leaders must tolerate views that are not yet consensus. At the time of the acquisition Bionic had about 40 entrepreneurs, growth investors and designers. Clients included P&G, Exelon and AB InBev\u2019s ZX Ventures. Kidder\u2019s speaker bio claims that more than 100 Fortune 500 companies have adopted the Growth OS, a self-reported figure.</p>
+
+<h3>Steering a portfolio</h3>
+<p>The 2023 growth report links several governance habits to growth. Firms whose executive committees, trained in growth strategy, reviewed the portfolio more often showed a 69 percent uplift in growth from inorganic sources and 39 percent from organic ones. Firms that increased their focus on scaling experiments and validating the portfolio faster showed a 22 percent boost. Firms that phased out old products quickly had 19 percent higher revenue growth from new and organic sources. The report also recommends venture studios or accelerators that create, test and scale ideas outside the core business. One consumer goods executive described going from zero to a hundred in a week, with 100 to 200 prototyped ideas to refine. As before, these are correlations from a survey.</p>
+
+<h3>AI in the loop</h3>
+<p>Song argues that generative AI shortens the path from idea to evidence. It can do the heavy lifting of validation and prototyping while humans protect relevance, responsibility and quality. Because AI has a low cost of creation, a team can test many versions of an ad or a site rather than a single clickable prototype. In December 2025 Accenture invested in WEVO so that GrowthOS can test value propositions and product experiences with synthetic personas and real users, with results in hours rather than weeks. In a 2025 conference session, a Song presenter reported roughly a 12 percent conversion lift within a few weeks for some clients, which is a single self-reported figure.</p>
+<div class="callout warn"><span class="ct">Synthetic users have limits</span>
+<p>The same session was careful to call synthetic users an expansion of the research toolkit and not a replacement. It asked teams to design their process so that nobody over-trusts synthetic insight before real users confirm it. Use simulation to generate hypotheses and narrow the field, then validate the important bets with real behavior.</p></div>
+
+<h3>Turn assumptions into tests</h3>
+<p>Song\u2019s own description names desirability and viability. Design thinking usually adds feasibility, and the table uses all three. This is standard practice, offered here as a way to apply the stages.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Assumption</th><th>The question</th><th>Stronger evidence</th><th>Weaker evidence</th></tr></thead>
+<tbody>
+<tr><td class="k">Desirability</td><td>Will people change their behavior for this?</td><td>Sign-ups, pre-orders or repeat use in a pilot.</td><td>\u201CI would use that\u201D in a survey.</td></tr>
+<tr><td class="k">Viability</td><td>Can it earn more than it costs to run?</td><td>Willingness to pay observed at a real price.</td><td>An internal spreadsheet model.</td></tr>
+<tr><td class="k">Feasibility</td><td>Can we build and operate it?</td><td>A working prototype under realistic load.</td><td>An architecture slide.</td></tr>
+</tbody></table></div>
+`,
+  keyTerms:[
+    {term:'MVP', def:'A minimum viable product: the smallest build that can test the core value.'},
+    {term:'Pilot', def:'A limited real-world release used to learn before scaling.'},
+    {term:'Evidence gate', def:'A decision point where evidence decides whether to continue, change or stop.'},
+    {term:'Productive failure', def:'A failed experiment that yields learning cheaply enough to be worth it.'},
+    {term:'Product-oriented team', def:'A standing team organized around a product\u2019s outcomes, not a temporary project.'},
+    {term:'Synthetic persona', def:'An AI-simulated user used to test ideas quickly before real users do.'}
+  ],
+  quiz:[
+    {q:'What is the purpose of the MVP and pilot stages?', options:['To impress executives with a polished demo.','To gain confidence in product-market fit through real learning before scaling.','To lock in the design.','To reduce headcount.'], correct:1, explain:'Song\u2019s stages design and build an MVP, then pilot and iterate on what is learned to gain confidence in product-market fit.'},
+    {q:'Which Growth OS principle is about evidence?', options:['Optimize the existing core.','Focus on what people do rather than what they say.','Avoid risk at all costs.','Wait for consensus before investing.'], correct:1, explain:'The book\u2019s principles include judging on behavior, celebrating productive failure, taking a portfolio approach and learning from the outside in.'},
+    {q:'What is the main risk the Song presenter flagged about synthetic personas?', options:['They are too expensive.','Teams may over-trust them before real users have confirmed the findings.','They cannot be used in more than one language.','They replace the need for a product.'], correct:1, explain:'Synthetic users expand the toolkit but do not replace real validation of important bets.'},
+    {q:'Which finding did the growth report associate with frequent portfolio review by growth-trained executive committees?', options:['A 69 percent uplift in inorganic revenue growth and 39 percent in organic.','No change in growth.','Lower morale.','Slower scaling.'], correct:0, explain:'It is a correlation from a survey of 970 executives, not proof that committees cause growth.'},
+    {q:'Which is the strongest evidence of desirability?', options:['A positive survey answer to \u201CWould you use this?\u201D','Pre-orders or repeated use in a pilot.','An enthusiastic internal workshop.','A competitor launching something similar.'], correct:1, explain:'Behavior beats stated intent. Pre-orders and repeat use show that people will change what they do.'}
+  ],
+  flashcards:[
+    {front:'The stages in order', back:'Identify needs, assess right to win, pick opportunities, validate, build an MVP, pilot and iterate, scale and evolve.'},
+    {front:'Growth OS in one line', back:'A venture-style system for building new businesses inside large companies, inherited from Bionic.'},
+    {front:'Four principles of New to Big', back:'Watch what consumers do, celebrate productive failure, take a portfolio approach, learn outside-in.'},
+    {front:'Kidder\u2019s diagnosis of big companies', back:'Often a permissions problem more than a talent or money problem.'},
+    {front:'Portfolio governance finding', back:'Growth-trained executive committees reviewing the portfolio more often: +69% inorganic and +39% organic revenue growth (survey correlation).'},
+    {front:'What GrowthOS adds with WEVO', back:'Testing of value propositions and experiences with synthetic personas and real users, in hours rather than weeks.'},
+    {front:'Three assumption types to test', back:'Desirability, viability and feasibility. Prefer behavioral evidence to stated intent.'}
+  ]
+});
+MODULES.push({
+  id:'m6', title:'Simplify', group:'The four verbs', phase:'simplify',
+  objectives:[
+    'Define the complexity tax and spot where it appears in a product.',
+    'Explain the experience continuum and why it depends on internal simplicity.',
+    'Extract concrete design and delivery practices from the IHG, Generali, Minna Bank and Prada cases.'
+  ],
+  content:`
+<p class="lede">A strong product wrapped in a confusing experience still fails. Simplify is about removing the friction between a person and the value, and Song\u2019s claim is that you fix the outside by fixing the inside.</p>
+
+<h3>The complexity tax</h3>
+<p>The life centricity playbook observes that technology is often pitched as a way to make things easier, yet each new tool can make the customer experience harder. Companies add technology that serves one silo, such as marketing or sales, without accounting for the connections between silos. The customer pays for it in repeated steps and broken context. Song calls this a <strong>complexity tax</strong>. Its remedy is a unified <strong>experience continuum</strong>: product, marketing, commerce, sales and service connected on a single data and experience platform that responds to needs in real time.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 300" role="img" aria-label="Left: four functions each with their own tool and a customer path that zigzags between them. Right: the four functions as one band on a shared platform with a straight customer path.">
+  <text x="10" y="17" class="b" font-size="13">Silos and the complexity tax</text>
+  <text x="310" y="17" class="b" font-size="13">One experience continuum</text>
+  <rect x="6" y="26" width="288" height="262" rx="8" class="bx"/>
+  <rect x="14" y="40" width="62" height="44" rx="6" class="bx-ink"/>
+  <rect x="82" y="40" width="62" height="44" rx="6" class="bx-ink"/>
+  <rect x="150" y="40" width="62" height="44" rx="6" class="bx-ink"/>
+  <rect x="218" y="40" width="62" height="44" rx="6" class="bx-ink"/>
+  <text x="45" y="66" text-anchor="middle" font-size="11">Product</text>
+  <text x="113" y="66" text-anchor="middle" font-size="11">Marketing</text>
+  <text x="181" y="66" text-anchor="middle" font-size="11">Sales</text>
+  <text x="249" y="66" text-anchor="middle" font-size="11">Service</text>
+  <path d="M28,168 L45,90 L62,168 L113,90 L132,168 L181,90 L204,168 L249,90" class="ln-bad" marker-end="url(#arw)"/>
+  <circle cx="28" cy="168" r="6" class="f-ink"/>
+  <text x="14" y="190" class="m" font-size="11">Customer</text>
+  <text x="14" y="228" font-size="12">Each silo adds its own tool;</text>
+  <text x="14" y="246" font-size="12">the person repeats themselves</text>
+  <text x="14" y="264" font-size="12">at every handoff.</text>
+
+  <rect x="306" y="26" width="288" height="262" rx="8" class="bx-simplify"/>
+  <rect x="316" y="40" width="268" height="44" rx="6" class="bx"/>
+  <path d="M383,40 L383,84 M450,40 L450,84 M517,40 L517,84" class="ln"/>
+  <text x="349.5" y="66" text-anchor="middle" font-size="11">Product</text>
+  <text x="416.5" y="66" text-anchor="middle" font-size="11">Marketing</text>
+  <text x="483.5" y="66" text-anchor="middle" font-size="11">Sales</text>
+  <text x="550.5" y="66" text-anchor="middle" font-size="11">Service</text>
+  <rect x="316" y="94" width="268" height="28" rx="6" class="f-simplify"/>
+  <text x="450" y="113" text-anchor="middle" class="w b" font-size="11.5">One data and experience platform</text>
+  <circle cx="330" cy="168" r="6" class="f-ink"/>
+  <path d="M336,168 L578,168" class="ln-good" marker-end="url(#arw)"/>
+  <text x="316" y="190" class="m" font-size="11">Customer</text>
+  <text x="316" y="228" font-size="12">Functions share one platform;</text>
+  <text x="316" y="246" font-size="12">context travels with the person,</text>
+  <text x="316" y="264" font-size="12">so the path stays simple.</text>
+</svg>
+<figcaption>Same four functions, two architectures. The customer\u2019s path is only as simple as the connections behind it.</figcaption>
+</figure>
+
+<h3>Simplicity outside comes from simplicity inside</h3>
+<p>The 2023 growth report goes further than the playbook. It argues that a great product is not enough, because the experience around it, from purchase to servicing, must be great too, and that any complexity can become a fatal flaw. Its answer is to remove internal complexity: break down silos and flatten hierarchies so people can act fast on customer problems. Companies that integrated their customer-facing functions, led by empathy, showed a 39 percent uplift in inorganic revenue growth. Those that built products that evolved with customers\u2019 lives showed a 22 percent increase. And 67 percent of companies that used empathy and inclusion at speed in product development outperformed peers on customer satisfaction. As always, these are survey associations.</p>
+
+<h3>Four cases and what each teaches</h3>
+
+<h4>IHG: a delivery system, not just an app</h4>
+<p>IHG, with 17 brands and more than 6,000 hotels, needed a new mobile app for two priority groups: loyalty members, its largest user group, and hotel owners, who benefit when bookings come through owned channels rather than commissioned third-party sites. A reskin was not an option because outdated infrastructure would have piled up technical debt and complexity. The app also had to run on iOS and Android, in 18 languages, across every brand and property.</p>
+<p>Song and IHG built a flexible delivery model, called a digital factory, that made development predictable, repeatable and reliable at scale. It can scale up or down with business cycles, run several upgrades in parallel, and bring in specialist talent when needed. The launch was staged: from 12 users close to the program to thousands of IHG employees, owners, partners and corporate customers, then a phased public release and full launch in late May 2022. Compared with pre-pandemic levels, revenue, usage and downloads were each up more than 20 percent by September 2022. The app also holds a 4.9-star iOS rating and won three Webby Awards in 2024.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 236" role="img" aria-label="A staircase showing IHG's staged app rollout: 12 users, then thousands of employees and partners, then a phased public launch, then full launch in May 2022.">
+  <text x="10" y="20" class="b" font-size="13">Progressive exposure: widen only after learning</text>
+  <rect x="10" y="150" width="100" height="56" rx="6" class="bx-simplify"/>
+  <text x="20" y="172" class="b" font-size="13">12 users</text>
+  <text x="20" y="189" class="m" font-size="11">close to the</text>
+  <text x="20" y="202" class="m" font-size="11">program</text>
+  <rect x="125" y="120" width="140" height="86" rx="6" class="bx-simplify"/>
+  <text x="135" y="142" class="b" font-size="13">Thousands</text>
+  <text x="135" y="160" class="m" font-size="11">employees, owners,</text>
+  <text x="135" y="175" class="m" font-size="11">partners, corporate</text>
+  <text x="135" y="190" class="m" font-size="11">customers</text>
+  <rect x="280" y="90" width="150" height="116" rx="6" class="bx-simplify"/>
+  <text x="290" y="112" class="b" font-size="13">Phased launch</text>
+  <text x="290" y="130" class="m" font-size="11">Pause, learn from</text>
+  <text x="290" y="145" class="m" font-size="11">feedback, then widen</text>
+  <rect x="445" y="60" width="145" height="146" rx="6" class="f-simplify"/>
+  <text x="455" y="82" class="w b" font-size="13">Full launch</text>
+  <text x="455" y="100" class="w" font-size="11">Late May 2022, at</text>
+  <text x="455" y="115" class="w" font-size="11">the Americas Owners</text>
+  <text x="455" y="130" class="w" font-size="11">Conference</text>
+  <text x="590" y="226" text-anchor="end" class="m" font-size="11">Not to scale</text>
+</svg>
+<figcaption>IHG released to a growing pool of testers, which surfaced rare error combinations before the public launch and protected the booking flow.</figcaption>
+</figure>
+<p><strong>Lessons:</strong> design for every stakeholder who depends on the product, invest in a repeatable delivery system, and expose the product to more people only as evidence accumulates.</p>
+
+<h4>Generali: design and IT in one room</h4>
+<p>The insurer Generali saw that a smooth experience was essential to lifetime customer relationships, and that the best experiences come from design and IT working together. It brought the two teams together to create a mobile app for customers, and later a hub for agents, through a series of quick-turnaround design collaborations that included people from across the business. <strong>Lesson:</strong> the org chart shows up in the product, so co-locate the disciplines that must agree.</p>
+
+<h4>Minna Bank: architecture as product strategy</h4>
+<p>Fukuoka Financial Group found that few services matched what digital-native customers in Japan wanted. Rather than adding an app to an old bank, it created Minna Bank, a digital bank on a full cloud banking system. It is mobile-first, shows aggregated activity across several banks, and uses QR codes for deposits and transfers. Its cloud system also supports banking as a service through flexible APIs, so non-financial companies can embed banking in their own offerings. <strong>Lesson:</strong> a platform choice can turn one product into an ecosystem.</p>
+
+<h4>Prada: craft standards plus reusable engineering</h4>
+<p>Prada wanted an online customization experience for its America\u2019s Cup sneaker that matched luxury standards. Song and Prada built a digital twin of the shoe and a 3D configurator that loads in seconds across browsers and devices. With more than 50 million possible configurations, pre-rendering images was impossible, so the team built a rendering server that produces high-resolution images of each custom design in real time and feeds them to fulfillment systems. The web configurator launched in four months, an in-store version followed three weeks later, and the same approach was later used for the Galleria handbag. <strong>Lesson:</strong> keep the fidelity bar high, and build the engine so the second product is cheaper than the first.</p>
+
+<h3>Craft practices in Song\u2019s product roles</h3>
+<p>Song\u2019s public job descriptions for digital product designers offer a peek at working practice. They describe prototyping at rising fidelity, from paper sketches to Figma or coded prototypes, and defining and maintaining design systems that guide a product across its life. They also mention producing design principles, task flows and wireframes for key screen types across devices, and working closely with agile development teams so the design intent survives implementation. These postings are indicative, not an official method statement.</p>
+
+<div class="callout"><span class="ct">Try it: map your continuum</span>
+<p>List every step a person takes from first hearing about your product to getting help after buying. For each handoff between teams or tools, note what the person has to repeat or re-learn. Those handoffs are where your complexity tax is being collected.</p></div>
+`,
+  keyTerms:[
+    {term:'Complexity tax', def:'The cost customers pay when siloed technology and teams fragment the experience.'},
+    {term:'Experience continuum', def:'Product, marketing, commerce, sales and service connected on one data and experience platform.'},
+    {term:'Digital factory', def:'A flexible delivery model that makes building and running digital products predictable and repeatable.'},
+    {term:'Digital twin', def:'A virtual model that faithfully mirrors a physical product, as in Prada\u2019s sneaker configurator.'},
+    {term:'Banking as a service', def:'Offering banking functions through APIs so other companies can embed them.'},
+    {term:'Design system', def:'Shared components and guidelines that keep a product coherent as it evolves.'}
+  ],
+  quiz:[
+    {q:'What is the complexity tax?', options:['A fee charged by consultancies.','The cost customers bear when each silo adds its own technology without connecting to the others.','A government levy on software.','The price premium of luxury products.'], correct:1, explain:'The playbook uses the term for over-complicated experiences that result when technology serves silos instead of the whole customer journey.'},
+    {q:'Why could IHG not simply reskin its existing app?', options:['Apple prohibited it.','Outdated infrastructure would have produced exponential technical debt and complexity.','The brand guidelines forbade it.','Guests disliked the old colors.'], correct:1, explain:'The case study says a reskin would have built on outdated infrastructure. The team rebuilt on a new architecture and a repeatable delivery model.'},
+    {q:'What did IHG\u2019s staged rollout accomplish?', options:['It hid the app from hotel owners.','It exposed the app to progressively larger groups, surfacing rare errors before the public launch.','It replaced testing.','It shortened the timeline to one week.'], correct:1, explain:'It began with 12 users and grew to thousands of internal and partner testers before a phased public launch.'},
+    {q:'What made Prada\u2019s configurator reusable beyond a single product?', options:['A scalable cloud architecture and a real-time rendering server that were later applied to a handbag.','A larger design team.','Pre-rendering all 50 million images.','A one-time custom animation.'], correct:0, explain:'With more than 50 million possible configurations, the team built a rendering server, and the same architecture supported a Galleria handbag configurator.'},
+    {q:'Which best describes the experience continuum?', options:['A very long onboarding flow.','A connected experience across product, marketing, commerce, sales and service on a shared data platform.','A subscription pricing model.','A set of brand colors.'], correct:1, explain:'The continuum is defined by connection: one data and experience platform that serves every customer-facing function.'}
+  ],
+  flashcards:[
+    {front:'Complexity tax', back:'The friction customers pay when siloed technology fragments the journey.'},
+    {front:'Experience continuum', back:'Product, marketing, commerce, sales and service on one platform, responding in real time.'},
+    {front:'Simplicity outside comes from', back:'Removing internal complexity: fewer silos and flatter hierarchies.'},
+    {front:'IHG lesson', back:'Build a repeatable delivery system (a digital factory), design for every stakeholder, and expand exposure only as evidence accumulates.'},
+    {front:'Generali lesson', back:'Put design and IT together so the experience is co-created, not handed off.'},
+    {front:'Minna Bank lesson', back:'Architecture is strategy: cloud and APIs let non-banks embed banking, turning a product into an ecosystem.'},
+    {front:'Prada lesson', back:'Hold a high fidelity bar and build reusable engines: a digital twin and rendering server reused for a handbag.'}
+  ]
+});
+MODULES.push({
+  id:'m7', title:'Scale', group:'The four verbs', phase:'scale',
+  objectives:[
+    'Explain organizational velocity and why Song treats speed as shorthand for relevance.',
+    'List the scaling practices the growth report links to stronger revenue growth.',
+    'Describe applied creativity: inventive versus expressive creativity, and the commitment, structure and expertise it needs.'
+  ],
+  content:`
+<p class="lede">Scale is the fourth verb, and its main constraint is speed. Song\u2019s research argues that most companies do not lack ideas or money. They lack the organizational velocity to turn ideas into relevant products fast enough.</p>
+
+<h3>The investment and growth gap</h3>
+<p>Song surveyed 970 executives at companies with at least $500 million in revenue in April and May 2023. About four in five said they had invested more capital in new products, services and businesses over the previous three years. Even so, 46 percent of their companies had single-digit revenue growth, and 10 percent had seen revenue decline.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 160" role="img" aria-label="Bar chart: 81 percent invested more capital, 46 percent had single-digit growth, 10 percent had declining revenue.">
+  <text x="10" y="18" class="b" font-size="13">Executives at large companies, 2023 survey (n = 970)</text>
+  <text x="230" y="55" text-anchor="end" font-size="12.5">Invested more capital</text>
+  <rect x="240" y="38" width="259" height="24" rx="4" class="f-scale"/>
+  <text x="507" y="56" class="b" font-size="13">81%</text>
+  <text x="230" y="95" text-anchor="end" font-size="12.5">Single-digit revenue growth</text>
+  <rect x="240" y="78" width="147" height="24" rx="4" class="f-scale" opacity=".75"/>
+  <text x="395" y="96" class="b" font-size="13">46%</text>
+  <text x="230" y="135" text-anchor="end" font-size="12.5">Revenue declined</text>
+  <rect x="240" y="118" width="32" height="24" rx="4" class="f-scale" opacity=".55"/>
+  <text x="280" y="136" class="b" font-size="13">10%</text>
+</svg>
+<figcaption>More spending did not reliably produce faster growth. The report argues that how fast a company learns and adapts matters more than how much it spends.</figcaption>
+</figure>
+
+<p>Song diagnoses a crisis of relevance: an inability to understand and act on customer needs in time, which the report ties to a lack of organizational velocity. Sixty percent of executives said it takes their company a year or more to adapt to changing customer needs, and 54 percent were unhappy with how quickly their company addresses customer problems. Song\u2019s modeling suggests that if the Accenture Global 2000 had pursued growth this way in 2022, they could have added more than $800 billion of annual revenue. That is a model output, not an observation.</p>
+
+<h3>The generative growth company</h3>
+<p>Song\u2019s label for the winners is a <strong>generative growth company</strong>. It is life-centric, and it adds velocity: it sees customers as people, solves for relevance, simplifies for ease of experience, and scales for growth, quickly enough to keep pace with the world. The report likes the image of an organism over an organization. It also describes a flywheel in which speed and quality feed each other through every phase of development, so velocity does not cost quality.</p>
+
+<h3>Scaling practices the report highlights</h3>
+<ul>
+  <li><strong>Portfolio guardrails.</strong> Executive committees trained in growth strategy review the growth portfolio often, which links to higher growth from both inorganic and organic sources.</li>
+  <li><strong>Scaling experiments.</strong> A consumer goods executive described generating 100 to 200 ideas in a week and refining them. Firms that scaled experiments and validated their portfolio faster saw a 22 percent boost in growth from new and organic sources.</li>
+  <li><strong>Retiring what no longer fits.</strong> Firms that phased out old products quickly had 19 percent higher revenue growth from new and organic sources.</li>
+  <li><strong>Digital growth engines.</strong> Streamlined frameworks for creating and delivering digital products, like IHG\u2019s digital factory, make output repeatable.</li>
+  <li><strong>AI co-pilots.</strong> Assess roles such as programmer, designer and project manager, where machines handle transactional work and humans guide, refine and finish it. Use mass-market co-pilots for designated teams and proprietary ones for specialized teams. Rebuild processes end to end with generative AI in mind, instead of only augmenting the current ones.</li>
+  <li><strong>Clear AI governance.</strong> Appoint a leader and structure for decisions on AI so it amplifies change instead of adding chaos.</li>
+</ul>
+
+<h3>Applied creativity</h3>
+<p>A 2026 Song report on creativity puts a number on the execution problem. Eighty-one percent of leaders say their organizations can generate creative ideas, but only 16 percent say they very frequently turn those ideas into growth. Nick Law, Song\u2019s creative chairperson, argues that the gap is a leadership issue and that how people are organized to be creative matters more, in some ways, than the technology underneath.</p>
+<p>The report separates <strong>inventive creativity</strong>, which makes things work, from <strong>expressive creativity</strong>, which makes people care about them. They rarely live in one person, so they need to be connected. The supporting infrastructure has three parts: commitment, structure and expertise. Having only two of the three is as good as having none. The report also argues that creative leadership should be a visible C-suite practice, like the CTO or CFO, with its own team of experts, and that leaders should model the cross-disciplinary collaboration they want.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 270" role="img" aria-label="Left: bars showing 81 percent can generate creative ideas versus 16 percent very frequently turning them into growth. Right: three pillars, commitment, structure and expertise, supporting applied creativity.">
+  <text x="10" y="18" class="b" font-size="13">Ideas versus growth</text>
+  <text x="10" y="50" class="m" font-size="11.5">Say they can generate creative ideas</text>
+  <rect x="10" y="58" width="210" height="24" rx="4" class="f-scale"/>
+  <text x="228" y="76" class="b" font-size="13">81%</text>
+  <text x="10" y="112" class="m" font-size="11.5">Very frequently turn ideas into growth</text>
+  <rect x="10" y="120" width="42" height="24" rx="4" class="f-scale"/>
+  <text x="60" y="138" class="b" font-size="13">16%</text>
+  <text x="10" y="184" font-size="12.5">The bottleneck is executing</text>
+  <text x="10" y="202" font-size="12.5">ideas, not having them.</text>
+
+  <text x="320" y="18" class="b" font-size="13">The infrastructure</text>
+  <rect x="320" y="34" width="270" height="28" rx="6" class="f-ink"/>
+  <text x="455" y="53" text-anchor="middle" class="w b" font-size="13">Applied creativity</text>
+  <rect x="320" y="62" width="84" height="96" class="bx-scale"/>
+  <rect x="413" y="62" width="84" height="96" class="bx-scale"/>
+  <rect x="506" y="62" width="84" height="96" class="bx-scale"/>
+  <text x="362" y="115" text-anchor="middle" font-size="11">Commitment</text>
+  <text x="455" y="115" text-anchor="middle" font-size="11">Structure</text>
+  <text x="548" y="115" text-anchor="middle" font-size="11">Expertise</text>
+  <rect x="320" y="158" width="270" height="10" class="f-rule"/>
+  <text x="320" y="196" class="b" font-size="11.5">Two of three works like none.</text>
+  <text x="320" y="216" class="m" font-size="11.5">Inventive creativity makes it work;</text>
+  <text x="320" y="232" class="m" font-size="11.5">expressive creativity makes people</text>
+  <text x="320" y="248" class="m" font-size="11.5">care. The two must be connected.</text>
+</svg>
+<figcaption>The 81 and 16 percent figures come from Song\u2019s creativity research. The pillars are Song\u2019s three parts of a working creative infrastructure.</figcaption>
+</figure>
+
+<h3>What this means for a product team</h3>
+<p>These are the course\u2019s readings of the material, not Song instructions. Treat velocity as a design constraint on the team as well as on the product.</p>
+<ul>
+  <li><strong>Move decisions to the front line.</strong> The playbook\u2019s Shiseido example shows the pattern. The company shifted from heavy planning to continuous experimentation, trained staff in design thinking and project management, and gave its 8,000 beauty consultants more responsibility because not every good idea comes from the C-suite.</li>
+  <li><strong>Keep teams standing and cross-functional.</strong> Product-oriented teams keep the learning from each release.</li>
+  <li><strong>Schedule revalidation and retirement.</strong> Put dates on when each product is re-tested and when it is allowed to end.</li>
+  <li><strong>Staff both kinds of creativity.</strong> Every product team needs people who make things work and people who make others care, with a leader who joins them.</li>
+</ul>
+`,
+  keyTerms:[
+    {term:'Organizational velocity', def:'How quickly a company can understand and act on changing customer needs.'},
+    {term:'Crisis of relevance', def:'Song\u2019s label for the inability to proactively understand customer needs, caused by low velocity.'},
+    {term:'Generative growth company', def:'A life-centric company with the velocity to see, solve, simplify and scale at the speed of life.'},
+    {term:'Digital growth engine', def:'A streamlined framework for creating and delivering digital products repeatably.'},
+    {term:'Applied creativity', def:'Creativity that gets executed and scaled into results, not only generated.'},
+    {term:'Inventive and expressive creativity', def:'Making things work versus making people care; both are needed and must be connected.'}
+  ],
+  quiz:[
+    {q:'What does the 2023 survey suggest about investing more in new products?', options:['More capital reliably produces faster growth.','Most firms invested more, yet many still had single-digit growth or decline, so spending alone does not solve the problem.','Firms that invested less grew fastest.','Only large firms invested more.'], correct:1, explain:'About four in five invested more capital, but 46 percent had single-digit growth and 10 percent declined. The report ties the gap to a lack of velocity.'},
+    {q:'Which is an example of a scaling guardrail recommended in the report?', options:['Growth-trained executive committees that regularly review the growth portfolio.','Freezing all experiments.','Letting each team choose its own metrics with no review.','Outsourcing all design.'], correct:0, explain:'Committees trained in growth strategy that reviewed the portfolio more often were linked to higher growth from inorganic and organic sources.'},
+    {q:'What is the difference between inventive and expressive creativity?', options:['Inventive creativity makes things work; expressive creativity makes people care about them.','Inventive is for products; expressive is for prices.','They are the same thing.','Inventive is done by machines; expressive by humans.'], correct:0, explain:'Nick Law\u2019s point is that both are needed and that they rarely live in one person, so they must be connected.'},
+    {q:'A company has commitment and structure for creativity but no expertise. According to the report, how does that compare with having none of the three?', options:['Nearly as good as having all three.','About the same as having none.','Twice as good as having one.','Better than having only expertise.'], correct:1, explain:'The report says the infrastructure only works when all three parts work together; two of three is like none.'},
+    {q:'What do 81 percent and 16 percent show?', options:['That most ideas are bad.','That generating ideas is common but frequently turning them into growth is rare, so execution is the bottleneck.','That creativity is declining.','That AI has replaced designers.'], correct:1, explain:'Eighty-one percent say they can generate creative ideas; only 16 percent very frequently turn them into growth.'}
+  ],
+  flashcards:[
+    {front:'Investment and growth gap', back:'About 4 in 5 executives invested more, yet 46% had single-digit growth and 10% declined (2023 survey, n = 970).'},
+    {front:'Crisis of relevance', back:'Inability to proactively understand customer needs, tied to low organizational velocity. 60% need a year or more to adapt.'},
+    {front:'Retirement finding', back:'Firms that phased out old products quickly had 19% higher revenue growth from new and organic sources.'},
+    {front:'Digital growth engine', back:'A streamlined framework for creating and delivering digital products repeatably; IHG\u2019s digital factory is an example.'},
+    {front:'Applied creativity numbers', back:'81% can generate ideas; only 16% very frequently turn them into growth.'},
+    {front:'Three pillars of creative infrastructure', back:'Commitment, structure and expertise. Two of three is like none.'},
+    {front:'Shiseido lesson', back:'Move from heavy planning to experimentation and give front-line staff more responsibility.'}
+  ]
+});
+MODULES.push({
+  id:'m8', title:'Products in the AI era', group:'Now', phase:'ink',
+  objectives:[
+    'Explain the engagement gap and the five ways Song says to close it.',
+    'Describe the two audiences of agentic commerce and the two strategies for brands.',
+    'Apply five design checks to an AI-enabled product, keeping the do-versus-say gap in mind.'
+  ],
+  content:`
+<p class="lede">AI changes products twice. It changes how you make them, which Modules 5 and 7 covered. It also changes who your product must please: the person, and increasingly the software acting on their behalf.</p>
+
+<h3>From off-the-shelf to on-the-fly</h3>
+<p>Song\u2019s 2023 growth report describes generative AI moving design from typing commands into a machine to telling it what is wanted and getting it. That points to products created dynamically around a person\u2019s stated desire, rather than pre-packaged options they must wade through. The report links self-adapting products, the kind that evolve with customers\u2019 lives, to a 22 percent increase in inorganic revenue growth. It also warns of a side effect. When AI makes competent output nearly free to produce, average work becomes abundant, so the differentiators are relevance, trust and craft.</p>
+
+<h3>The engagement gap</h3>
+<p>A January 2025 Song-led report on consumer technology found that AI-integrated devices were launching quickly while sales lagged. It called the difference between promise and perceived value the engagement gap. Its prescription is to design and market technology for consumers, not at them, across five points:</p>
+<ol>
+  <li><strong>Define what \u201Cgood\u201D looks like.</strong> Balance broad appeal with personal relevance and state practical benefits. Many products are pitched as game-changers without showing how they improve daily life.</li>
+  <li><strong>Simplify complexity.</strong> Make setup easier and emphasize practical benefits. A fifth of consumers prefer a cautious approach to new technology.</li>
+  <li><strong>Surprise and delight with user-centric innovation.</strong> Only 13 percent of consumers say they are always keen to adopt new tech at launch, so simplify disruptive features to reduce hesitation.</li>
+  <li><strong>Market transparently.</strong> Seventy-one percent were confused by the terminology used to explain features, so plain, relatable language builds trust.</li>
+  <li><strong>Make trust your edge.</strong> Only 39 percent of consumers trust companies to have good intentions and 43 percent trust their claims to be honest, so visible security and honesty differentiate.</li>
+</ol>
+
+<h3>Trust and authenticity</h3>
+<p>The 2025 Life Trends report found 60 percent of respondents questioning the authenticity of online content more than before. It recommended that brands establish clear ways for customers to verify their authenticity. The 2026 trend called Finding Neo, as summarized in secondary sources, argues from the other side that AI has to serve the human experience and not dominate it. The two ideas share a design implication: AI features earn use when people can see what they do and why.</p>
+
+<h3>Agentic commerce: a second audience</h3>
+<p>Song\u2019s April 2026 agentic commerce report argues that this is a generational reset, not a new channel. Brands now have two audiences: the person and the AI agent acting for them. Agents can compare products, read fine print, choose a winner, and complete purchase, delivery and returns without human effort. The report cites several signals. Ninety percent of frequent AI users in North America said they would consider switching from a preferred brand if their assistant found a better one. A Song simulation expected up to 45 percent of shoppers to move at least half of their commerce activity into agent-mediated ecosystems within two years. And 25 percent of executives expect AI agents to be their top audience for content within three years.</p>
+<p>Brands face two strategies. Most must become the <strong>choice of agents</strong>, meaning their product data is structured so agents can understand features, compare warranties and return policies, and select them in seconds. A few category leaders can become the <strong>agent of choice</strong>, meaning the agent that people and other agents turn to. That takes deep domain expertise, first-party data, integrated services and the ability to curate journeys end to end. Song\u2019s example is Noli, a beauty tech venture backed by L\u2019Or\u00E9al and powered by Accenture, where 98 percent of a small sample of 164 users reported a positive match.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 236" role="img" aria-label="A person, their AI agent and a brand connected in both directions, with two strategies for the brand: be the choice of agents, or become the agent of choice.">
+  <rect x="10" y="20" width="140" height="66" rx="8" class="bx-ink"/>
+  <text x="80" y="46" text-anchor="middle" class="b" font-size="14">The person</text>
+  <text x="80" y="66" text-anchor="middle" class="m" font-size="11.5">Meaning and limits</text>
+  <rect x="230" y="20" width="140" height="66" rx="8" class="f-ink"/>
+  <text x="300" y="46" text-anchor="middle" class="w b" font-size="14">Their agent</text>
+  <text x="300" y="66" text-anchor="middle" class="w" font-size="11.5">Compares and picks</text>
+  <rect x="450" y="20" width="140" height="66" rx="8" class="bx-ink"/>
+  <text x="520" y="46" text-anchor="middle" class="b" font-size="14">The brand</text>
+  <text x="520" y="66" text-anchor="middle" class="m" font-size="11.5">Offer, data, proof</text>
+  <path d="M154,53 L226,53" class="ln" marker-start="url(#arw)" marker-end="url(#arw)"/>
+  <path d="M374,53 L446,53" class="ln" marker-start="url(#arw)" marker-end="url(#arw)"/>
+
+  <path d="M520,88 L520,108 L150,108 L150,126 M520,108 L450,108 L450,126" class="ln"/>
+  <rect x="10" y="128" width="280" height="96" rx="8" class="bx"/>
+  <text x="22" y="152" class="b" font-size="13">Be the choice of agents</text>
+  <text x="22" y="172" class="m" font-size="11.5">Structured, machine-readable, verifiable</text>
+  <text x="22" y="188" class="m" font-size="11.5">data: claims, price, warranty, returns,</text>
+  <text x="22" y="204" class="m" font-size="11.5">and stock. Reliable delivery.</text>
+  <rect x="310" y="128" width="280" height="96" rx="8" class="bx"/>
+  <text x="322" y="152" class="b" font-size="13">Become the agent of choice</text>
+  <text x="322" y="172" class="m" font-size="11.5">Deep domain expertise, first-party data,</text>
+  <text x="322" y="188" class="m" font-size="11.5">integrated services and curated journeys,</text>
+  <text x="322" y="204" class="m" font-size="11.5">so people come to you first.</text>
+</svg>
+<figcaption>The brand now sells to a person and to the agent acting for them. Song\u2019s two strategies differ in ambition: be selected, or be the selector.</figcaption>
+</figure>
+
+<h3>How much will people delegate?</h3>
+<p>A June 2026 Song consumer survey of 25,590 people in 16 countries measured appetite for delegation. It found a ladder in which each higher rung of autonomy draws fewer takers. People adjust the dial per decision: the same person might delegate a grocery restock but keep travel booking. The report says the boundary is set by what carries personal meaning, such as identity, relationships and self-expression, rather than by task complexity. It also finds that agents reward proof: verified claims, clean product data, transparent pricing, reliable availability and successful fulfillment. Its shorthand is that brands must earn value twice, once with the person\u2019s heart and once with the agent\u2019s algorithm.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 226" role="img" aria-label="Bar chart of delegation: 74 percent would delegate task execution, 32 percent would delegate decisions within limits, 9 percent would allow autonomous purchases.">
+  <text x="10" y="18" class="b" font-size="13">Share of consumers who would delegate to an AI agent, by level</text>
+  <rect x="10" y="30" width="385" height="26" rx="4" class="f-ink" opacity=".9"/>
+  <text x="403" y="50" class="b" font-size="13">74%</text>
+  <text x="10" y="76" class="m" font-size="11.5">Task execution: the agent follows instructions and the person stays in charge.</text>
+  <rect x="10" y="94" width="166" height="26" rx="4" class="f-ink" opacity=".65"/>
+  <text x="184" y="114" class="b" font-size="13">32%</text>
+  <text x="10" y="140" class="m" font-size="11.5">Delegated decisions: the agent chooses within limits and the person approves.</text>
+  <rect x="10" y="158" width="47" height="26" rx="4" class="f-ink" opacity=".45"/>
+  <text x="65" y="178" class="b" font-size="13">9%</text>
+  <text x="10" y="204" class="m" font-size="11.5">Autonomous purchasing: the agent acts alone within defined rules.</text>
+</svg>
+<figcaption>Trust is earned rung by rung. Most people will hand over chores; few hand over the purchase.</figcaption>
+</figure>
+
+<div class="callout warn"><span class="ct">Intentions are not behavior</span>
+<p>These are survey answers and simulations about the future. Module 3\u2019s do-versus-say gap applies: people often say they would do more than they later do. Use the figures to shape hypotheses and pilots, not forecasts.</p></div>
+
+<h3>Five design checks for an AI-enabled product</h3>
+<p>These are the course\u2019s synthesis of the reports above.</p>
+<ol>
+  <li><strong>Delegation.</strong> Which decisions can a person hand over, and can they move that dial up or down at any time?</li>
+  <li><strong>Meaning.</strong> Where does the task carry identity, relationships or self-expression, and so where should a human stay in the loop?</li>
+  <li><strong>Verifiability.</strong> What can an agent confirm about your product today? Is the data structured, current and true?</li>
+  <li><strong>Trust cues.</strong> Where does the product ask for trust, and what visible proof does it offer?</li>
+  <li><strong>Human service.</strong> Does the AI serve the person\u2019s experience, or does it replace parts they valued?</li>
+</ol>
+`,
+  keyTerms:[
+    {term:'Engagement gap', def:'The gap between what AI-integrated products promise and the value consumers perceive.'},
+    {term:'Agentic commerce', def:'Commerce in which AI agents compare, choose and complete purchases on a person\u2019s behalf.'},
+    {term:'Choice of agents', def:'Being structured and verifiable enough that agents select your offering.'},
+    {term:'Agent of choice', def:'Becoming the agent that people and other agents go to for a category.'},
+    {term:'Delegation dial', def:'A person\u2019s adjustable level of trust in handing tasks and decisions to an agent.'},
+    {term:'On-the-fly', def:'Solutions created dynamically around a stated desire instead of pre-packaged options.'}
+  ],
+  quiz:[
+    {q:'What is the engagement gap?', options:['The distance between two app screens.','The disconnect between the promise of AI-integrated products and the value consumers perceive, which limits adoption and sales.','The time users spend on a page.','A shortage of AI engineers.'], correct:1, explain:'Song\u2019s 2025 consumer technology report uses the term for AI devices launched with big promises but lagging sales.'},
+    {q:'In agentic commerce, brands now have which two audiences?', options:['Investors and regulators.','The person and the AI agent acting on their behalf.','Retailers and wholesalers.','Marketing and sales teams.'], correct:1, explain:'Agents sit between brands and customers, so offers must appeal to people and be legible and verifiable for agents.'},
+    {q:'What separates becoming the agent of choice from being the choice of agents?', options:['The first only needs a good logo.','The agent of choice builds the trusted agent itself, needing deep expertise, first-party data and integrated services; the other optimizes to be selected by others\u2019 agents.','There is no difference.','The first is cheaper.'], correct:1, explain:'Most brands must be selectable by agents. Category leaders may invest to become the agent that people and other agents turn to.'},
+    {q:'According to the June 2026 consumer survey, what shapes the boundary of what people delegate?', options:['Task complexity.','Meaning: identity, relationships and self-expression.','The price of the item.','The brand\u2019s logo.'], correct:1, explain:'The report says people delegate the hard work and keep what carries personal meaning.'},
+    {q:'Which product data practice best supports being chosen by an agent?', options:['Beautiful photography alone.','Structured, machine-readable, verifiable claims, price, warranty, returns and availability.','Long marketing copy.','Hiding return policies.'], correct:1, explain:'Agents reward proof. Clean, verifiable product data lets them compare and select confidently.'}
+  ],
+  flashcards:[
+    {front:'Engagement gap', back:'The gap between AI products\u2019 promise and consumers\u2019 perceived value. Close it by designing for consumers, not at them.'},
+    {front:'Five points to close the gap', back:'Define \u201Cgood\u201D, simplify, surprise and delight with user-centric innovation, market transparently, make trust your edge.'},
+    {front:'Two audiences of agentic commerce', back:'The person and the AI agent acting on their behalf.'},
+    {front:'Choice of agents versus agent of choice', back:'Be selected by agents through verifiable data, or become the agent people turn to through expertise and first-party data.'},
+    {front:'The delegation ladder', back:'74% would delegate task execution, 32% decisions within limits, 9% autonomous purchases.'},
+    {front:'What shapes the delegation boundary?', back:'Meaning: identity, relationships and self-expression, not just complexity.'},
+    {front:'Earn value twice', back:'Once with the person\u2019s heart and once with the agent\u2019s algorithm. Agents reward verified proof.'}
+  ]
+});
+const CAPSTONE = {
+  id:'playbook', title:'Playbook and sources', group:'Apply', phase:'ink',
+  content:`
+<p class="lede">You now have the pieces. This module joins them into one loop, lets you score your own product against it, and ends with an honest account of how far the evidence goes.</p>
+
+<h3>One loop, five moves</h3>
+<p>Song publishes four verbs. Splitting Solve into finding and proving gives a working loop of five moves. This arrangement is the course\u2019s synthesis of Song\u2019s material, not an official Song diagram.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 600 400" role="img" aria-label="A loop of five moves, See, Solve, Build and validate, Simplify and Scale, around a center labeled AI as accelerator and audience, with applied creativity and AI governance as the surrounding condition.">
+  <path d="M362,60 Q412,82 428,130" class="ln" marker-end="url(#arw)"/>
+  <path d="M436,186 Q444,244 402,286" class="ln" marker-end="url(#arw)"/>
+  <path d="M315,315 L286,315" class="ln" marker-end="url(#arw)"/>
+  <path d="M202,288 Q160,242 164,188" class="ln" marker-end="url(#arw)"/>
+  <path d="M170,130 Q186,82 238,58" class="ln" marker-end="url(#arw)"/>
+
+  <rect x="235" y="27" width="130" height="50" rx="8" class="bx-see"/>
+  <text x="300" y="49" text-anchor="middle" class="b" font-size="13.5">See</text>
+  <text x="300" y="66" text-anchor="middle" class="m" font-size="11">life forces, needs</text>
+  <rect x="368" y="132" width="130" height="50" rx="8" class="bx-solve"/>
+  <text x="433" y="154" text-anchor="middle" class="b" font-size="13.5">Solve</text>
+  <text x="433" y="171" text-anchor="middle" class="m" font-size="11">need, right to win</text>
+  <rect x="317" y="290" width="130" height="50" rx="8" class="bx-solve"/>
+  <text x="382" y="312" text-anchor="middle" class="b" font-size="13.5">Build, validate</text>
+  <text x="382" y="329" text-anchor="middle" class="m" font-size="11">MVP, pilot, evidence</text>
+  <rect x="153" y="290" width="130" height="50" rx="8" class="bx-simplify"/>
+  <text x="218" y="312" text-anchor="middle" class="b" font-size="13.5">Simplify</text>
+  <text x="218" y="329" text-anchor="middle" class="m" font-size="11">one continuum</text>
+  <rect x="102" y="132" width="130" height="50" rx="8" class="bx-scale"/>
+  <text x="167" y="154" text-anchor="middle" class="b" font-size="13.5">Scale</text>
+  <text x="167" y="171" text-anchor="middle" class="m" font-size="11">velocity, portfolio</text>
+
+  <circle cx="300" cy="212" r="52" class="ring-s"/>
+  <text x="300" y="203" text-anchor="middle" class="b" font-size="14">AI</text>
+  <text x="300" y="220" text-anchor="middle" class="m" font-size="11">accelerator</text>
+  <text x="300" y="235" text-anchor="middle" class="m" font-size="11">and audience</text>
+
+  <rect x="10" y="356" width="580" height="36" rx="8" class="ln-d"/>
+  <text x="300" y="379" text-anchor="middle" font-size="12">Around the loop: applied creativity and clear AI governance</text>
+</svg>
+<figcaption>What Scale learns feeds the next round of See. AI sits in the middle because it speeds up every move and also changes who the product must please.</figcaption>
+</figure>
+
+<div class="tablewrap"><table>
+<thead><tr><th>Move</th><th>The question to ask</th><th>Evidence to bring</th><th>Module</th></tr></thead>
+<tbody>
+<tr><td class="k">See</td><td>What is happening in this person\u2019s life, and which forces are moving?</td><td>Observed behavior, dynamic segments, a life-force brief.</td><td>3</td></tr>
+<tr><td class="k">Solve</td><td>Which need are we serving, and how many ways could we serve it?</td><td>A need statement, at least three options, a view of your right to win.</td><td>4</td></tr>
+<tr><td class="k">Build, validate</td><td>What would change our mind cheaply?</td><td>Sign-ups, pre-orders, pilot use, evidence gates.</td><td>5</td></tr>
+<tr><td class="k">Simplify</td><td>Where does the person repeat themselves or re-learn something?</td><td>A continuum map with the handoffs marked.</td><td>6</td></tr>
+<tr><td class="k">Scale</td><td>How fast can we decide, learn and retire what no longer fits?</td><td>Decision cycle time, revalidation dates, portfolio review.</td><td>7</td></tr>
+<tr><td class="k">AI, throughout</td><td>What can an agent verify, and what will a person delegate?</td><td>Structured product data, trust cues, a delegation check.</td><td>8</td></tr>
+</tbody></table></div>
+
+<h3>Score your own product</h3>
+<p>Answer twelve statements about a product you know. Nothing is stored or sent; the result is only for this session. It points you to the module that matches your weakest area.</p>
+<div id="assess-mount"></div>
+
+<h3>Reading the evidence like a skeptic</h3>
+<ul>
+  <li><strong>Whose data?</strong> Most figures are Accenture\u2019s own surveys and models, and Song sells services that follow these frameworks.</li>
+  <li><strong>Correlation, not cause.</strong> Firms that revalidate yearly may simply be better run in many ways. The surveys cannot separate those explanations.</li>
+  <li><strong>Selected stories.</strong> Client case studies are chosen by the firm and rarely show failures.</li>
+  <li><strong>Self-reported claims.</strong> Executive expectations, a speaker-bio adoption count and a presenter\u2019s conversion lift are all self-reported.</li>
+  <li><strong>Small samples.</strong> Noli\u2019s 98 percent positive match comes from 164 users.</li>
+  <li><strong>Simulated users.</strong> Synthetic research is fast, but it is a stand-in for real behavior.</li>
+  <li><strong>Familiar ingredients.</strong> In this course\u2019s reading, much of the method resembles established practice: design thinking, lean experimentation, venture building and jobs-to-be-done. What looks distinctive is the emphasis on outside life forces, on connecting marketing, product and service, and on organizational velocity.</li>
+  <li><strong>No independent evaluation.</strong> I did not find independent studies testing whether these frameworks improve outcomes.</li>
+</ul>
+
+<h3>What I could not verify</h3>
+<ul>
+  <li>The full 2026 Life Trends report was not accessible to me. The 2026 trend descriptions come from secondary sources.</li>
+  <li>Song\u2019s Growth &amp; Product Innovation service page has moved, so the stage sequence in Module 5 comes from a search snapshot.</li>
+  <li>The craft practices in Module 6 come from public job descriptions, not an official method statement.</li>
+  <li>Song\u2019s web pages change often. Check the current versions before quoting.</li>
+</ul>
+
+<h3>A four-week way to try it</h3>
+<ol>
+  <li><strong>Week 1, see.</strong> Write the life-force brief for one product and pull the behavior data that tests it.</li>
+  <li><strong>Week 2, solve.</strong> Write the need statement and list three ways to serve it, including one that is not a feature.</li>
+  <li><strong>Week 3, prove.</strong> Run one cheap test with a behavioral signal and agree in advance what would make you stop.</li>
+  <li><strong>Week 4, simplify and scale.</strong> Map the continuum, mark the handoffs, and put revalidation and retirement dates on the calendar.</li>
+</ol>
+
+<h3>Sources</h3>
+<p>Primary Accenture and Song publications are listed first, then independent and secondary sources.</p>
+<ul class="src">
+  <li><a href="https://www.accenture.com/content/dam/accenture/final/capabilities/song/marketing-transformation/document/Accenture-Life-Centricity-Playbook.pdf" target="_blank" rel="noopener">The life centricity playbook</a> (Accenture, 2022).</li>
+  <li><a href="https://www.accenture.com/content/dam/accenture/final/capabilities/song/communicate/document/Accenture-SongLifeCentric-Report-Growth-And-Product-Innovation.pdf" target="_blank" rel="noopener">The generative growth edge</a> (Accenture Song, 2023).</li>
+  <li><a href="https://hbr.org/2022/09/keeping-up-with-customers-increasingly-dynamic-needs" target="_blank" rel="noopener">Keeping up with customers\u2019 increasingly dynamic needs</a>, David Droga and Baiju Shah (Harvard Business Review, 2022).</li>
+  <li><a href="https://www.accenture.com/us-en/insights/song/accenture-life-trends" target="_blank" rel="noopener">Accenture Life Trends 2025</a>.</li>
+  <li><a href="https://www.accenture.com/en/insights/song/applied-creativity" target="_blank" rel="noopener">Applied creativity and how to lead it</a> (Accenture Song, 2026).</li>
+  <li><a href="https://www.accenture.com/en/insights/song/agentic-commerce" target="_blank" rel="noopener">Agentic commerce: make your brand unmissable</a> (Accenture, April 2026).</li>
+  <li><a href="https://www.accenture.com/en/insights/consulting/talk-my-ai-agent" target="_blank" rel="noopener">Talk to my AI agent: the new rules of brand value</a> (Accenture Consumer Pulse, June 2026).</li>
+  <li><a href="https://www.accenture.com/en/insights/high-tech/innovation-sells-turning-ai-devices-hype-habit" target="_blank" rel="noopener">AI integration: taking AI devices from hype to habit</a> (Accenture, January 2025).</li>
+  <li><a href="https://www.accenture.com/en/services/customer-service/product-service-innovation" target="_blank" rel="noopener">Product and service innovation</a> and <a href="https://www.accenture.com/en/about/song-services-index" target="_blank" rel="noopener">Song services</a> (Accenture).</li>
+  <li>Case studies: <a href="https://www.accenture.com/us-en/case-studies/song/ihg-future-ready-app" target="_blank" rel="noopener">IHG</a> and <a href="https://www.accenture.com/en/case-studies/song/prada-luxury-product-customization" target="_blank" rel="noopener">Prada</a> (Accenture).</li>
+  <li>Newsroom: <a href="https://newsroom.accenture.com/news/2022/accenture-announces-accenture-interactives-evolution" target="_blank" rel="noopener">Song announced</a>, <a href="https://newsroom.accenture.com/news/2021/accenture-acquires-bionic-to-help-brands-drive-customer-growth-and-innovation" target="_blank" rel="noopener">Bionic</a>, <a href="https://newsroom.accenture.com/news/2024/accenture-completes-acquisition-of-global-digital-product-company-work-and-co" target="_blank" rel="noopener">Work &amp; Co</a>, <a href="https://newsroom.accenture.com/news/2025/accenture-invests-in-wevo-to-accelerate-customer-led-growth" target="_blank" rel="noopener">WEVO</a>, and <a href="https://www.businesswire.com/news/home/20170906006392/en/4163447/Accenture-Acquires-Leading-Design-Innovation-Firm-MATTER" target="_blank" rel="noopener">MATTER</a>.</li>
+  <li><a href="https://www.penguinrandomhouse.com/books/567012/new-to-big-by-david-kidder-and-christina-wallace/" target="_blank" rel="noopener"><em>New to Big</em></a> (Kidder and Wallace, publisher page) and a <a href="https://www.steelcase.com/research/articles/topics/culture-talent/qa-david-kidder/" target="_blank" rel="noopener">Steelcase interview with David Kidder</a>.</li>
+  <li><a href="https://rosenverse.rosenfeldmedia.com/videos/redefining-speed-and-scale-how-accentures-growthos-uses-ai-simulated-insights-to-reduce-risk-and-accelerate-innovation" target="_blank" rel="noopener">Session summary on GrowthOS and AI-simulated insights</a> (Rosenverse, 2025).</li>
+  <li>Secondary sources on Life Trends 2026: <a href="https://thinkingdigital.co.uk/workshops/accentures-2026-life-trends/" target="_blank" rel="noopener">Thinking Digital</a>, <a href="https://podcasts.marketingsociety.com/episode/life-trends-2026-why-life-centricity-is-the-new-differentiator-in-a-saturated-world-" target="_blank" rel="noopener">The Marketing Society podcast</a>, and <a href="https://note.com/thedesignium/n/n651e0c1c890f?hl=en" target="_blank" rel="noopener">a developer\u2019s reading of the report</a>.</li>
+  <li>Song product-design job descriptions: <a href="https://designproject.io/jobs/jobs/ux-designer-song-at-accenture-r0o75f" target="_blank" rel="noopener">UX Designer, Song</a> and <a href="https://www.accenture.com/hk-en/careers/jobdetails?id=R00177085_en" target="_blank" rel="noopener">Digital Product Designer</a>.</li>
+  <li><a href="https://www.campaignasia.com/article/why-big-consultancies-buy-design-agencies/407973" target="_blank" rel="noopener">Why big consultancies buy design agencies</a> (Campaign Asia), for Fjord\u2019s 2013 acquisition.</li>
+</ul>
+`
+};
+
+ASSESS.push(
+  {phase:'see', q:'We check at least once a year that our product still solves a real need.'},
+  {phase:'see', q:'We watch what people do, not only what they say, to spot needs early.'},
+  {phase:'solve', q:'Our product briefs start from a need and a life context, not a feature.'},
+  {phase:'solve', q:'For each need we weigh options beyond a new feature, such as a partnership or a service.'},
+  {phase:'build', q:'We test desirability with behavior, such as sign-ups, pre-orders or pilots, before big builds.'},
+  {phase:'build', q:'We set evidence gates in advance where a project can be changed or stopped.'},
+  {phase:'simplify', q:'Product, marketing, sales and service work from one shared view of the customer.'},
+  {phase:'simplify', q:'We release progressively and learn before going wide.'},
+  {phase:'scale', q:'Someone reviews our product portfolio regularly and retires what no longer fits.'},
+  {phase:'scale', q:'Front-line teams can make product decisions without long approval chains.'},
+  {phase:'ai', q:'Our product data is structured, current and verifiable enough for an AI agent to compare.'},
+  {phase:'ai', q:'People can see what our AI features do and can adjust how much they hand over.'}
+);
+
+FINAL_QUIZ.push(
+  {q:'Which set names Song\u2019s four verbs in order?', options:['Sense, Sell, Ship, Support','See, Solve, Simplify, Scale','Survey, Segment, Stage, Sustain','Study, Strategize, Structure, Stabilize'], correct:1, explain:'See customers as people, solve for relevance, simplify for ease of experience, scale for growth.'},
+  {q:'A company that treats people as changing individuals shaped by forces like technology, culture and health is practicing which approach?', options:['Product-centric','Customer-centric','Life-centric','Channel-centric'], correct:2, explain:'Life centricity adds the outside forces and the changing roles people play to the customer-centric picture.'},
+  {q:'A survey shows companies that revalidated yearly grew faster. What is the most defensible reading?', options:['Yearly revalidation causes faster growth.','The two are associated, but other factors could explain both, so test it locally.','Revalidation slows growth.','The survey proves nothing and can be ignored.'], correct:1, explain:'Song\u2019s data shows associations from surveys. It is useful evidence, but it does not prove cause.'},
+  {q:'Which best describes how Life Trends is produced?', options:['A single analyst reads the news.','Studios in many countries surface signals, a small team synthesizes and interviews experts, and survey data supports it.','It is copied from academic journals.','A chatbot writes it.'], correct:1, explain:'It combines local signals from 40+ studios with expert interviews and consumer research.'},
+  {q:'Which of these is a need statement, not a product statement?', options:['We make thermostats.','Small businesses need an easy way to find and buy from each other.','We will add a chatbot.','We need a new logo.'], correct:1, explain:'A need statement describes what people are trying to get done, leaving room for many solutions.'},
+  {q:'A bicycle maker sees that commuters lack reliable last-mile transport and starts a rental service. Which approach is this?', options:['Outside-in','Inside-out','Portfolio pruning','Design system maintenance'], correct:0, explain:'It starts from an unmet need and builds to meet it, which is outside-in. Inside-out would start from existing assets.'},
+  {q:'A pilot shows lots of positive survey comments but almost no repeat use. What should an evidence gate conclude?', options:['Scale immediately.','Weight the behavior: the desirability signal is weak, so change course or stop.','Ignore the pilot.','Change the survey.'], correct:1, explain:'The Growth OS principle is to trust what people do over what they say.'},
+  {q:'What is the recommended use of synthetic personas?', options:['Replace all real user research.','Speed up hypothesis generation, then confirm important bets with real users.','Avoid them entirely.','Use them only after launch.'], correct:1, explain:'They expand the toolkit but should not replace real validation.'},
+  {q:'A customer must re-enter the same details in four separate channels. Which idea from Song does this illustrate?', options:['Total addressable need','The complexity tax','Applied creativity','Agent of choice'], correct:1, explain:'Siloed tools that do not share context force the customer to pay a complexity tax in repeated effort.'},
+  {q:'What is the main takeaway from IHG\u2019s staged rollout?', options:['Launch to everyone at once for speed.','Expose a product to progressively larger groups so errors surface before the public launch.','Avoid beta testing.','Only test with executives.'], correct:1, explain:'IHG began with 12 users and expanded to thousands of testers before a phased public launch.'},
+  {q:'Eighty-one percent say they can generate creative ideas but only 16 percent very frequently turn them into growth. What does this imply?', options:['Ideas are the bottleneck.','Execution is the bottleneck, so build the infrastructure of commitment, structure and expertise.','AI should replace creatives.','Creativity is overrated.'], correct:1, explain:'The report frames applied creativity as a leadership and infrastructure issue.'},
+  {q:'What does the investment and growth gap suggest about spending more on new products?', options:['It guarantees faster growth.','Spending alone does not ensure growth; velocity and relevance matter.','It always lowers growth.','It only matters for small firms.'], correct:1, explain:'Most firms invested more, yet many still had single-digit growth or decline.'},
+  {q:'What is the engagement gap?', options:['Low employee morale.','The difference between the promise of AI-integrated products and the value people perceive.','A gap in server capacity.','The difference between two age groups.'], correct:1, explain:'It describes AI products that launch with big promises but face weak adoption.'},
+  {q:'In agentic commerce, which move makes a brand more likely to be selected by an agent?', options:['Hiding pricing details.','Publishing structured, verifiable product data with reliable fulfillment.','Using vaguer marketing claims.','Restricting all data access.'], correct:1, explain:'Agents reward proof: verified claims, clean product data, transparent pricing and reliable availability.'},
+  {q:'According to the June 2026 survey, which share would let an agent act fully autonomously on purchases?', options:['74%','32%','9%','90%'], correct:2, explain:'74% would delegate task execution, 32% would delegate decisions within limits, and 9% would allow autonomous purchasing.'},
+  {q:'Which is the best summary of Song\u2019s product thinking for a practitioner?', options:['Build features faster than competitors.','See people in their changing lives, solve a real need, prove it with behavior, simplify the whole experience, and scale with velocity, with AI as accelerator and audience.','Copy competitors\u2019 roadmaps.','Focus only on branding.'], correct:1, explain:'The loop joins Song\u2019s four verbs, with AI as a thread through each move.'}
+);
+
+(function(){
+const COURSE_TITLE = 'Creating great products with Accenture Song\u2019s frameworks';
+const state = {quiz:{}, cards:{}, assess:{count:0,total:ASSESS.length}, active:'m1'};
+const $ = (s, r) => (r || document).querySelector(s);
+function el(tag, cls, html){ const e=document.createElement(tag); if(cls) e.className=cls; if(html!==undefined) e.innerHTML=html; return e; }
+function shuffled(arr){
+  const a = arr.map((v,i)=>({v:v,i:i}));
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+function readMins(html){
+  const t = html.replace(/<svg[\s\S]*?<\/svg>/g,' ').replace(/<[^>]+>/g,' ');
+  const w = t.split(/\s+/).filter(Boolean).length;
+  return Math.max(3, Math.round(w/200));
+}
+
+const PANELS = MODULES.map(m => ({id:m.id, title:m.title, group:m.group, phase:m.phase, mod:m}));
+PANELS.push({id:'playbook', title:CAPSTONE.title, group:CAPSTONE.group, phase:CAPSTONE.phase, mod:CAPSTONE, capstone:true});
+PANELS.push({id:'review', title:'Cumulative review', group:'Apply', phase:'ink', review:true});
+
+const totalQuiz = MODULES.reduce((n,m)=>n+m.quiz.length,0) + FINAL_QUIZ.length;
+const totalCards = MODULES.reduce((n,m)=>n+m.flashcards.length,0);
+const totalMins = MODULES.reduce((n,m)=>n+readMins(m.content),0) + readMins(CAPSTONE.content);
+
+/* ---------- progress ---------- */
+function updateMeta(id){
+  const n = $('#nm-'+id); if(!n) return;
+  const q = state.quiz[id], c = state.cards[id];
+  const parts = [];
+  if(id==='playbook'){ parts.push(state.assess.count ? 'Self-check '+state.assess.count+' of '+state.assess.total : 'Self-check not started'); }
+  else {
+    parts.push(q && q.answered ? 'Quiz '+q.correct+' right of '+q.answered+' answered' : 'Quiz not started');
+    if(c) parts.push(c.seen ? 'Cards '+c.seen+' of '+c.total+' reviewed' : 'Cards not started');
+  }
+  n.innerHTML = parts.join('<br>');
+}
+function updateOverall(){
+  let a = 0;
+  Object.keys(state.quiz).forEach(k => { a += state.quiz[k].answered; });
+  $('#overall').innerHTML = 'Progress: '+a+' of '+totalQuiz+' quiz questions answered<div class="bar"><i style="width:'+Math.round(a/totalQuiz*100)+'%"></i></div>';
+}
+
+/* ---------- quiz ---------- */
+function buildQuiz(modId, questions, title){
+  const block = el('section','quiz');
+  block.appendChild(el('h3', null, title || 'Check your understanding'));
+  const stat = state.quiz[modId] = {answered:0, correct:0, total:questions.length};
+  const sum = el('p','quiz-sum'); sum.setAttribute('aria-live','polite');
+  questions.forEach((item, qi) => {
+    const q = el('div','q');
+    const p = el('p','q-prompt'); p.textContent = (qi+1)+'. '+item.q; q.appendChild(p);
+    const opts = el('div','opts');
+    const fb = el('div','q-fb'); fb.setAttribute('aria-live','polite');
+    const order = shuffled(item.options);
+    order.forEach((o, oi) => {
+      const b = el('button','opt'); b.type='button';
+      b.innerHTML = '<span class="opt-l">'+String.fromCharCode(65+oi)+'</span><span class="opt-t"></span>';
+      b.querySelector('.opt-t').textContent = o.v;
+      b.dataset.right = (o.i === item.correct) ? '1' : '';
+      b.addEventListener('click', () => {
+        if(q.dataset.done) return;
+        q.dataset.done = '1';
+        const ok = b.dataset.right === '1';
+        [].forEach.call(opts.children, x => { if(x.dataset.right==='1') x.classList.add('correct'); });
+        if(!ok) b.classList.add('incorrect');
+        fb.innerHTML = (ok ? '<b class="ok">Correct.</b> ' : '<b class="no">Not quite.</b> ');
+        fb.appendChild(document.createTextNode(item.explain));
+        stat.answered++; if(ok) stat.correct++;
+        if(stat.answered === stat.total){
+          sum.textContent = 'You got '+stat.correct+' of '+stat.total+' right.';
+          const again = el('button','btn','Try again with shuffled options');
+          again.type='button';
+          again.onclick = () => { const nb = buildQuiz(modId, questions, title); block.replaceWith(nb); updateMeta(modId); updateOverall(); nb.scrollIntoView({block:'start'}); };
+          sum.appendChild(document.createElement('br')); sum.appendChild(again);
+        } else {
+          sum.textContent = stat.correct+' right so far, '+stat.answered+' of '+stat.total+' answered.';
+        }
+        updateMeta(modId); updateOverall();
+      });
+      opts.appendChild(b);
+    });
+    q.appendChild(opts); q.appendChild(fb); block.appendChild(q);
+  });
+  block.appendChild(sum);
+  return block;
+}
+
+/* ---------- flashcards ---------- */
+function buildDeck(modId, cards){
+  const sec = el('section','deck');
+  sec.appendChild(el('h3', null, 'Flashcards'));
+  const stage = el('div','deck-stage'); sec.appendChild(stage);
+  const info = state.cards[modId] = {seen:0, total:cards.length};
+  const seenSet = new Set();
+  let queue = [], pos = 0, knew = 0, missed = [];
+  const all = cards.map((_,i)=>i);
+  function start(list){ queue = list.slice(); pos = 0; knew = 0; missed = []; render(); }
+  function done(){
+    stage.innerHTML = '';
+    const box = el('div','deck-done');
+    box.innerHTML = '<p><strong>You knew '+knew+' of '+queue.length+'.</strong></p>';
+    if(missed.length){
+      const r = el('button','btn primary','Review missed ('+missed.length+')'); r.type='button';
+      r.onclick = () => start(missed); box.appendChild(r);
+    }
+    const s = el('button','btn','Start over'); s.type='button'; s.onclick = () => start(all); box.appendChild(s);
+    stage.appendChild(box);
+  }
+  function render(){
+    stage.innerHTML = '';
+    if(pos >= queue.length){ done(); return; }
+    const c = cards[queue[pos]];
+    stage.appendChild(el('p','deck-count','Card '+(pos+1)+' of '+queue.length));
+    const card = el('div','card'); card.tabIndex = 0; card.setAttribute('role','button');
+    card.setAttribute('aria-label','Flashcard. Press Enter or Space to flip.');
+    card.innerHTML = '<div class="card-in"><div class="face front"></div><div class="face back"></div></div>';
+    card.querySelector('.front').textContent = c.front;
+    card.querySelector('.back').textContent = c.back;
+    stage.appendChild(card);
+    stage.appendChild(el('p','deck-hint','Answer in your head, then flip the card.'));
+    const row = el('div');
+    const miss = el('button','btn','Missed it'); miss.type='button'; miss.disabled = true;
+    const got = el('button','btn primary','Got it'); got.type='button'; got.disabled = true;
+    function flip(){ card.classList.toggle('flipped'); if(card.classList.contains('flipped')){ miss.disabled = false; got.disabled = false; } }
+    card.addEventListener('click', flip);
+    card.addEventListener('keydown', e => { if(e.key==='Enter' || e.key===' '){ e.preventDefault(); flip(); } });
+    function rate(ok){
+      seenSet.add(queue[pos]); info.seen = seenSet.size;
+      if(ok) knew++; else missed.push(queue[pos]);
+      pos++; updateMeta(modId); updateOverall(); render();
+      const nc = $('.card', stage); if(nc) nc.focus({preventScroll:true});
+    }
+    miss.onclick = () => rate(false); got.onclick = () => rate(true);
+    row.appendChild(miss); row.appendChild(got); stage.appendChild(row);
+  }
+  start(all);
+  return sec;
+}
+
+/* ---------- self-assessment ---------- */
+const PH = [
+  {id:'see', label:'See', mod:'m3', ph:'see'},
+  {id:'solve', label:'Solve', mod:'m4', ph:'solve'},
+  {id:'build', label:'Build and validate', mod:'m5', ph:'solve'},
+  {id:'simplify', label:'Simplify', mod:'m6', ph:'simplify'},
+  {id:'scale', label:'Scale', mod:'m7', ph:'scale'},
+  {id:'ai', label:'AI era', mod:'m8', ph:'ink'}
+];
+function buildAssessment(mount){
+  const answers = {};
+  const labels = ['Not yet','Partly','Yes'];
+  const list = el('div');
+  const result = el('div','result'); result.setAttribute('aria-live','polite');
+  ASSESS.forEach((a, i) => {
+    const row = el('div','arow');
+    const p = el('p'); p.textContent = a.q; row.appendChild(p);
+    const seg = el('div','seg'); seg.setAttribute('role','group'); seg.setAttribute('aria-label', a.q);
+    labels.forEach((l, v) => {
+      const b = el('button', null, l); b.type='button'; b.setAttribute('aria-pressed','false');
+      b.onclick = () => {
+        answers[i] = v;
+        [].forEach.call(seg.children, (x, xi) => x.setAttribute('aria-pressed', xi===v ? 'true' : 'false'));
+        state.assess.count = Object.keys(answers).length; updateMeta('playbook'); draw();
+      };
+      seg.appendChild(b);
+    });
+    row.appendChild(seg); list.appendChild(row);
+  });
+  function draw(){
+    result.innerHTML = '';
+    const n = Object.keys(answers).length;
+    if(!n){ return; }
+    result.appendChild(el('h4', null, 'Your profile'));
+    const scores = PH.map(ph => {
+      let sum = 0, cnt = 0, tot = 0;
+      ASSESS.forEach((a, i) => { if(a.phase === ph.id){ tot++; if(answers[i] !== undefined){ sum += answers[i]; cnt++; } } });
+      return {ph:ph, pct: Math.round(sum/(2*tot)*100), cnt:cnt, tot:tot};
+    });
+    scores.forEach(s => {
+      const r = el('div','rbar ph-'+s.ph.ph);
+      r.innerHTML = '<span></span><span class="track"><i style="width:'+s.pct+'%"></i></span><span>'+s.pct+'%</span>';
+      r.firstChild.textContent = s.ph.label;
+      result.appendChild(r);
+    });
+    if(n < ASSESS.length){
+      result.appendChild(el('p', null, 'Answer all '+ASSESS.length+' statements for your full picture ('+n+' answered so far).'));
+    } else {
+      const min = Math.min.apply(null, scores.map(s => s.pct));
+      const weakest = scores.filter(s => s.pct === min);
+      const names = weakest.map(s => s.ph.label).join(' and ');
+      result.appendChild(el('p', null, '<strong>Weakest area: '+names+'.</strong> Start with '+(weakest.length>1 ? 'those modules' : 'that module')+'.'));
+      weakest.forEach(s => {
+        const b = el('button','btn primary','Open the '+s.ph.label+' module'); b.type='button';
+        b.onclick = () => showPanel(s.ph.mod); result.appendChild(b);
+      });
+    }
+  }
+  mount.appendChild(list); mount.appendChild(result);
+}
+
+/* ---------- panels ---------- */
+function buildPager(idx){
+  const pg = el('div','pager');
+  if(idx > 0){
+    const b = el('button','btn','Previous: '+PANELS[idx-1].title); b.type='button'; b.onclick = () => showPanel(PANELS[idx-1].id); pg.appendChild(b);
+  } else { pg.appendChild(el('span')); }
+  if(idx < PANELS.length-1){
+    const b = el('button','btn primary','Next: '+PANELS[idx+1].title); b.type='button'; b.onclick = () => showPanel(PANELS[idx+1].id); pg.appendChild(b);
+  }
+  return pg;
+}
+function buildPanel(p, idx){
+  const sec = el('section','panel ph-'+p.phase); sec.id = 'panel-'+p.id;
+  if(p.review){
+    sec.appendChild(el('h2', null, 'Cumulative review'));
+    sec.appendChild(el('p','meta', FINAL_QUIZ.length+' questions from every module. Options are shuffled each time you try.'));
+    sec.appendChild(buildQuiz('review', FINAL_QUIZ, 'Mixed questions'));
+    sec.appendChild(buildPager(idx));
+    return sec;
+  }
+  const m = p.mod;
+  if(m.hero){
+    sec.appendChild(el('h1', null, COURSE_TITLE));
+    sec.appendChild(el('p','dek', m.dek));
+    sec.appendChild(el('p','meta', MODULES.length+' modules, '+totalQuiz+' quiz questions, '+totalCards+' flashcards, a playbook and a cumulative review. About '+totalMins+' minutes of reading in total.'));
+  } else {
+    sec.appendChild(el('h2', null, p.title));
+    sec.appendChild(el('p','meta', 'About '+readMins(m.content)+' minutes to read'+(m.quiz ? ', then a quiz and flashcards.' : '.')));
+  }
+  if(m.objectives){
+    sec.appendChild(el('div','objectives','<strong>By the end you can</strong><ul>'+m.objectives.map(o=>'<li>'+o+'</li>').join('')+'</ul>'));
+  }
+  sec.appendChild(el('div','prose', m.content));
+  if(m.keyTerms && m.keyTerms.length){
+    const kt = el('div','prose');
+    kt.innerHTML = '<h3>Key terms</h3><dl class="terms">'+m.keyTerms.map(t=>'<dt>'+t.term+'</dt><dd>'+t.def+'</dd>').join('')+'</dl>';
+    sec.appendChild(kt);
+  }
+  if(m.quiz && m.quiz.length) sec.appendChild(buildQuiz(m.id, m.quiz));
+  if(m.flashcards && m.flashcards.length) sec.appendChild(buildDeck(m.id, m.flashcards));
+  if(p.capstone){ const mount = $('#assess-mount', sec); if(mount) buildAssessment(mount); }
+  sec.appendChild(buildPager(idx));
+  return sec;
+}
+
+function showPanel(id){
+  state.active = id;
+  [].forEach.call(document.querySelectorAll('.panel'), s => s.classList.toggle('active', s.id === 'panel-'+id));
+  [].forEach.call(document.querySelectorAll('.nav-item'), b => b.setAttribute('aria-current', b.dataset.id === id ? 'true' : 'false'));
+  window.scrollTo(0, 0);
+}
+
+/* ---------- boot ---------- */
+const nav = $('#nav'), main = $('#main');
+let lastGroup = null;
+PANELS.forEach((p, idx) => {
+  if(p.group !== lastGroup){
+    lastGroup = p.group;
+    nav.appendChild(el('div','nav-group', p.group));
+  }
+  const b = el('button','nav-item ph-'+p.phase);
+  b.type='button'; b.dataset.id = p.id; b.setAttribute('aria-current', idx===0 ? 'true' : 'false');
+  b.innerHTML = '<span class="nt"></span><span class="nm" id="nm-'+p.id+'"></span>';
+  b.querySelector('.nt').textContent = p.title;
+  b.onclick = () => showPanel(p.id);
+  nav.appendChild(b);
+  main.appendChild(buildPanel(p, idx));
+  updateMeta(p.id);
+});
+showPanel('m1');
+updateOverall();
+})();
+</script>
+</body>
+</html>
